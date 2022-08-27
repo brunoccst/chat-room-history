@@ -4,7 +4,7 @@ import './App.css';
 
 function App() {
   setTimeout(() => {
-    fetch('/api/HelloWorld').then((value: Response) => {
+    fetch('/api/GetChatLogs').then((value: Response) => {
       console.log(value);
     });
   }, 3000);
