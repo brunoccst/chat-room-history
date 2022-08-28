@@ -19,52 +19,49 @@ namespace DataAccess.Services
         /// <summary>
         /// A dictionary to store a method for each respective time interval type.
         /// </summary>
-        private Dictionary<TimeInterval, Func<List<ChatEntry>>> TimeIntervalLoadDict { get; set; }
+        private Dictionary<TimeInterval, TimeSpan> TimeIntervalLoadDict { get; set; }
 
         public ChatEntryService(List<ChatEvent> chatEvents)
         {
             this.chatEvents = chatEvents;
 
             // Set each method to its respective time interval.
-            TimeIntervalLoadDict = new Dictionary<TimeInterval, Func<List<ChatEntry>>>
+            TimeIntervalLoadDict = new Dictionary<TimeInterval, TimeSpan>
             {
-                { TimeInterval.MinuteByMinute, GetMinuteByMinuteChatEntries },
-                { TimeInterval.Hourly, GetHourlyChatEntries }
+                { TimeInterval.MinuteByMinute, new TimeSpan(0, 0, 0) },
+                { TimeInterval.Hourly, new TimeSpan(1, 0, 0) }
             };
         }
 
         public List<ChatEntry> GetChatEntries(TimeInterval timeInterval)
         {
-            return TimeIntervalLoadDict[timeInterval]();
+            return GetChatEntriesByInterval(TimeIntervalLoadDict[timeInterval]);
         }
 
-        private List<ChatEntry> GetMinuteByMinuteChatEntries()
+        /// <summary>
+        /// Get the chat entries by an interval
+        /// </summary>
+        /// <param name="interval">Interval</param>
+        /// <returns>Chat entries within the interval</returns>
+        private List<ChatEntry> GetChatEntriesByInterval(TimeSpan interval)
         {
-            return chatEvents
-                .Select(cl => new ChatEntry()
-                {
-                    Timestamp = cl.Timestamp,
-                    Informations = new List<string> { cl.ToString() }
-                })
-                .ToList();
-        }
+            // Check if no interval was set, to avoid division by zero afterwards.
+            bool isZero = interval.Ticks == 0;
 
-        private List<ChatEntry> GetHourlyChatEntries()
-        {
-            // TODO: Change this
-            return chatEvents
-                // Group by the current hour by making the minutes and seconds become to zero.
-                .GroupBy(ce => ce.Timestamp
-                    .AddMinutes(-ce.Timestamp.Minute)
-                    .AddMilliseconds(-ce.Timestamp.Millisecond)
-                )
-                // Then select the strings of each
-                .Select(ceg => new ChatEntry()
-                {
-                    Timestamp = ceg.Key,
-                    Informations = ceg.Select(cl => cl.ToString()).ToList()
-                })
-                .ToList();
+            var grouped = from dt in chatEvents
+                          group dt by (isZero) // If no interval was set...
+                            ? dt.Timestamp.Ticks // ...then simply group by each own specific timestamp
+                            : dt.Timestamp.Ticks / interval.Ticks // ...else, group all the events which their timestamp is within the defined interval
+                          into g
+                          select new ChatEntry
+                          {
+                              Timestamp = (isZero) // If no interval was set...
+                                  ? g.First().Timestamp // ...the group will only have one item, so use the first timestamp as value
+                                  : new DateTime(g.Key * interval.Ticks), // ...else, use the group key timestamp (multiplying by the interval to return to the correct date time)
+                              Informations = g.Select(i => i.ToString()).ToList()
+                          };
+
+            return grouped.ToList();
         }
     }
 }
