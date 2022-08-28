@@ -28,7 +28,7 @@ namespace DataAccess.Services
             // Set each method to its respective time interval.
             TimeIntervalLoadDict = new Dictionary<TimeInterval, TimeSpan>
             {
-                { TimeInterval.MinuteByMinute, new TimeSpan(0, 0, 0) },
+                { TimeInterval.MinuteByMinute, new TimeSpan(0, 1, 0) },
                 { TimeInterval.Hourly, new TimeSpan(1, 0, 0) }
             };
         }
