@@ -5,6 +5,6 @@ namespace DataAccess.Interfaces
 {
     public interface IChatEntryService
     {
-        List<ChatEntry> GetChatEntries(TimeInterval timeInterval);
+        List<ChatEntryTimestampGroup> GetChatEntries(TimeInterval timeInterval);
     }
 }
