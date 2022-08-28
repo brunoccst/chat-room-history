@@ -1,7 +1,6 @@
 class APIAgent {
     private path: string = "api";
-    
-    GetChatLogs = () => fetch("api/GetChatLogs")
+    GetChatLogs = () => fetch(`${this.path}/GetChatLogs`)
 }
 
 const apiAgent = new APIAgent();
