@@ -46,9 +46,11 @@ For example, if the granularity "minute by minute" is selected, the data shown l
 * 6pm: Kate comments: "Hey, Bob"
 
 If the granularity is "hourly", the data is agreggated accordingly and is shown like this:
-* 5pm: 2 people entered the room
-       1 comment
-* 6pm: 1 comment
+* 5pm:
+* * 2 people entered the room
+* * 1 comment
+* 6pm:
+* * 1 comment
 
 ## Domain
 The Domain is a basic .NET class library project responsible for executing logic in a given data source, returning it in the correct order, agreggation or any other processing required.
