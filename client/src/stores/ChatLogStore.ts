@@ -1,8 +1,10 @@
 import { makeAutoObservable } from 'mobx';
+import TimeInterval from 'types/TimeInterval';
 import APIAgent from '../agents/APIAgent';
 import ChatLog from '../types/ChatLog';
 
 class ChatLogStore {
+    timeInterval: TimeInterval = TimeInterval.MinuteByMinute;
     chatLogList: ChatLog[] = [];
 
     constructor() {
@@ -10,11 +12,16 @@ class ChatLogStore {
         this.loadData();
     }
 
+    setTimeInterval = (timeInterval: TimeInterval) => {
+        this.timeInterval = timeInterval
+        this.loadData();
+    };
+
     /**
      * Loads the chat log data by making an API request and storing it in the state.
      */
-    loadData() {
-        APIAgent.GetChatLogs()
+    private loadData() {
+        APIAgent.GetChatLogs(this.timeInterval)
             .then(async (value: Response) => {
                 if (value.ok)
                     return value.json();
@@ -37,6 +44,8 @@ class ChatLogStore {
         });
     }
 }
+
+export { ChatLogStore };
 
 const chatLogStore = new ChatLogStore();
 

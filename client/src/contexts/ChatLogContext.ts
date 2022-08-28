@@ -1,6 +1,6 @@
 import { createContext } from "react"
-import ChatLog from '../types/ChatLog';
+import { ChatLogStore } from '../stores/ChatLogStore';
 
-const ChatLogContext = createContext<ChatLog[]>([]);
+const ChatLogContext = createContext<ChatLogStore>({} as ChatLogStore);
 
 export default ChatLogContext;
