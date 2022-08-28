@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Interfaces
+namespace DataAccess.Entities
 {
-    public interface IChatLogService
+    public class ChatEntry
     {
-        List<ChatLog> GetChatLogs();
+        public DateTime Timestamp { get; set; }
+        public List<string> Informations { get; set; }
     }
 }

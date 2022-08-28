@@ -7,10 +7,10 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Domain\DataAccess.csproj" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="data\chatLog.json" />
+    <EmbeddedResource Include="data\chatEvents.json" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

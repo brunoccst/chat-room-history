@@ -6,36 +6,35 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using DataAccess.Entities;
 using DataAccess.Interfaces;
+using DataAccess.Enums;
 
 namespace API
 {
     public class Functions
     {
-        private IChatLogService chatLogService { get; set; }
+        private IChatEntryService chatEntryService { get; set; }
 
-        public Functions(IChatLogService chatLogService)
+        public Functions(IChatEntryService chatEntryService)
         {
-            this.chatLogService = chatLogService;
+            this.chatEntryService = chatEntryService;
         }
 
-        [FunctionName("GetChatLogs")]
-        public async Task<IActionResult> GetChatLogs(
+        [FunctionName("GetChatEntries")]
+        public async Task<IActionResult> GetChatEntries(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            //string name = req.Query["name"];
+            log.LogInformation("Received a request");
 
-            //string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            //dynamic data = JsonConvert.DeserializeObject(requestBody);
-            //name = name ?? data?.name;
+            TimeInterval timeInterval = TimeInterval.MinuteByMinute;
+            Enum.TryParse(req.Query["timeInterval"], out timeInterval);
 
-            var chatLogs = await Task.Run(this.chatLogService.GetChatLogs);
+            log.LogInformation("Time interval: " + timeInterval);
 
-            return new OkObjectResult(chatLogs);
+            var chatEntries = await Task.Run(() => this.chatEntryService.GetChatEntries(timeInterval));
+
+            return new OkObjectResult(chatEntries);
         }
     }
 }

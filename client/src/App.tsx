@@ -1,16 +1,16 @@
 import React from 'react';
-import ChatLogContext from './contexts/ChatLogContext';
-import ChatLogStore from './stores/ChatLogStore';
+import ChatEntryContext from './contexts/ChatEntryContext';
+import ChatEntryStore from './stores/ChatEntryStore';
 import { observer } from 'mobx-react-lite';
-import { ChatLogList } from './components/chat-log-list/ChatLogList';
+import { ChatEntryList } from './components/chat-entry-list/ChatEntryList';
 import './App.scss';
 
 const App = observer(() => {
   return (
     <div className="App">
-      <ChatLogContext.Provider value={ChatLogStore.chatLogList}>
-        <ChatLogList></ChatLogList>
-      </ChatLogContext.Provider>
+      <ChatEntryContext.Provider value={ChatEntryStore}>
+        <ChatEntryList></ChatEntryList>
+      </ChatEntryContext.Provider>
     </div>
   );
 });

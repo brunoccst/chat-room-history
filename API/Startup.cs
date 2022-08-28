@@ -18,10 +18,10 @@ namespace API
 {
     public class Startup : IWebJobsStartup
     {
-        public async Task<string> GetChatLogTextFromFileAsync() {
+        public async Task<string> GetChatEntryTextFromFileAsync() {
             var assembly = this.GetType().GetTypeInfo().Assembly;
 
-            var resourceStream = assembly.GetManifestResourceStream("API.data.chatLog.json");
+            var resourceStream = assembly.GetManifestResourceStream("API.data.chatEvents.json");
             
             using var reader = new StreamReader(resourceStream, Encoding.UTF8);
             return await reader.ReadToEndAsync();
@@ -31,11 +31,11 @@ namespace API
         {
             builder.Services.TryAddScoped(s =>
                 {
-                    string jsonText = GetChatLogTextFromFileAsync().Result;
-                    return JsonConvert.DeserializeObject<List<ChatLog>>(jsonText);
+                    string jsonText = GetChatEntryTextFromFileAsync().Result;
+                    return JsonConvert.DeserializeObject<List<ChatEvent>>(jsonText);
                 }
             );
-            builder.Services.TryAddScoped<IChatLogService, ChatLogService>();
+            builder.Services.TryAddScoped<IChatEntryService, ChatEntryService>();
         }
     }
 }

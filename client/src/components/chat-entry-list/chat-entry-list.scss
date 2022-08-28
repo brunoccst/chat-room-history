@@ -1,0 +1,13 @@
+.chat-log-list {
+    background-color: #FFFFFF;
+    padding: 20px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .header {
+        display: flex;
+        gap: 8px;
+    }
+}
