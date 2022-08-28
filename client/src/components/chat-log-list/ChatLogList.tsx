@@ -1,4 +1,4 @@
-import react, { useContext } from 'react';
+import { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import ChatLogContext from '../../contexts/ChatLogContext';
 import ChatLog from '../../types/ChatLog';

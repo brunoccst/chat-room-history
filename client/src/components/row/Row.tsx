@@ -1,4 +1,3 @@
-import React from 'react';
 import ChatLog from 'types/ChatLog';
 import EventType from 'types/EventType';
 import './row.scss';
