@@ -1,9 +1,9 @@
 import { makeAutoObservable } from 'mobx';
 import TimeInterval from 'types/TimeInterval';
-import APIAgent from '../agents/APIAgent';
+import APIAgent from 'agents/APIAgent';
 import ChatEntry from 'types/ChatEntry';
 
-class ChatLogStore {
+class ChatEntryStore {
     timeInterval: TimeInterval = TimeInterval.MinuteByMinute;
     chatEntryList: ChatEntry[] = [];
 
@@ -45,8 +45,8 @@ class ChatLogStore {
     }
 }
 
-export { ChatLogStore };
+export { ChatEntryStore };
 
-const chatLogStore = new ChatLogStore();
+const chatEntryStore = new ChatEntryStore();
 
-export default chatLogStore;
+export default chatEntryStore;

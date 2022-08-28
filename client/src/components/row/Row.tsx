@@ -6,7 +6,9 @@ const Row = (chatEntry: ChatEntry) => {
         hour: '2-digit',
         minute: '2-digit'
     });
-    const informations = chatEntry.informations.map(information => <div>{information}</div>);
+    const informations = chatEntry.informations.map(information => (
+        <div key={information.replaceAll(' ', '')}>{information}</div>
+    ));
 
     return (
         <div className='row'>

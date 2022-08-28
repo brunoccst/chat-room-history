@@ -1,12 +1,12 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
-import ChatLogContext from 'contexts/ChatLogContext';
+import ChatLogContext from 'contexts/ChatEntryContext';
 import ChatEntry from 'types/ChatEntry';
 import Row from 'components/row/Row';
 import TimeInterval, { toText } from 'types/TimeInterval';
-import './chat-log-list.scss';
+import './chat-entry-list.scss';
 
-export const ChatLogList = observer(() => {
+export const ChatEntryList = observer(() => {
     const chatLogContext = useContext(ChatLogContext);
 
     const AggregationLevel = () => {
@@ -27,7 +27,7 @@ export const ChatLogList = observer(() => {
                                 const timeInterval = Number(key) as TimeInterval;
                                 const text = toText(timeInterval);
                                 return (
-                                    <option value={key}>{text}</option>
+                                    <option key={key} value={key}>{text}</option>
                                 )
                             })
                     }
@@ -38,7 +38,7 @@ export const ChatLogList = observer(() => {
 
 
     return (
-        <div className="chat-log-list">
+        <div className="chat-entry-list">
             <AggregationLevel></AggregationLevel>
             {
                 chatLogContext.chatEntryList.map((chatEntry: ChatEntry) => {
