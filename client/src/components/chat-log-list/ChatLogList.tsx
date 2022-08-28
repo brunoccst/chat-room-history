@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import ChatLogContext from 'contexts/ChatLogContext';
 import ChatEntry from 'types/ChatEntry';
