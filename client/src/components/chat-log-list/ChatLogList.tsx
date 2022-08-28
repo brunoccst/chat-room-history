@@ -9,7 +9,7 @@ import './chat-log-list.scss';
 export const ChatLogList = observer(() => {
     const chatLogContext = useContext(ChatLogContext);
 
-    const Header = () => {
+    const AggregationLevel = () => {
         const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
             const numberValue = Number(event.target.value);
             const timeInterval = numberValue as TimeInterval;
@@ -17,7 +17,7 @@ export const ChatLogList = observer(() => {
         }
 
         return (
-            <div>
+            <div className="aggregation-level">
                 <label>Aggregation level:</label>
                 <select value={chatLogContext.timeInterval} onChange={onChange}>
                     {
@@ -39,7 +39,7 @@ export const ChatLogList = observer(() => {
 
     return (
         <div className="chat-log-list">
-            <Header></Header>
+            <AggregationLevel></AggregationLevel>
             {
                 chatLogContext.chatEntryList.map((chatEntry: ChatEntry) => {
                     const key = `${chatEntry.timestamp.toISOString()}`;
