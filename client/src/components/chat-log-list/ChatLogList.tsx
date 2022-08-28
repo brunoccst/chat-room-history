@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import ChatLogContext from '../../contexts/ChatLogContext';
-import ChatLog from '../../types/ChatLog';
+import ChatLogContext from 'contexts/ChatLogContext';
+import ChatEntry from 'types/ChatEntry';
 import Row from 'components/row/Row';
 import TimeInterval, { toText } from 'types/TimeInterval';
 import './chat-log-list.scss';
@@ -41,9 +41,9 @@ export const ChatLogList = observer(() => {
         <div className="chat-log-list">
             <Header></Header>
             {
-                chatLogContext.chatLogList.map((chatLog: ChatLog) => {
-                    const key = `${chatLog.timestamp.toISOString()}`;
-                    return <Row {...chatLog} key={key}></Row>;
+                chatLogContext.chatEntryList.map((chatEntry: ChatEntry) => {
+                    const key = `${chatEntry.timestamp.toISOString()}`;
+                    return <Row {...chatEntry} key={key}></Row>;
                 })
             }
         </div>

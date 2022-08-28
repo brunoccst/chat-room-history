@@ -1,41 +1,14 @@
-import ChatLog from 'types/ChatLog';
-import EventType from 'types/EventType';
+import ChatEntry from 'types/ChatEntry';
 import './row.scss';
 
-const TimeStamp = ({ timestamp }: ChatLog) => {
-    return (
-        <div>{timestamp.toLocaleString()}</div>
-    )
-};
+const Row = (chatEntry: ChatEntry) => {
+    const timestamp = chatEntry.timestamp.toLocaleTimeString();
+    const informations = chatEntry.informations.map(information => <div>{information}</div>);
 
-const Information = ({ eventType, userName, data }: ChatLog) => {
-    let information: string = "";
-
-    switch (eventType) {
-        case EventType.EnterTheRoom:
-            information = `${userName} enters the room`;
-            break;
-        case EventType.Comment:
-            information = `${userName} comments: "${data}"`;
-            break;
-        case EventType.HighFiveAnotherUser:
-            information = `${userName} high-fives ${data}`;
-            break;
-        case EventType.LeaveTheRoom:
-            information = `${userName} leaves the room`;
-            break;
-    }
-
-    return (
-        <div>{information}</div>
-    );
-}
-
-const Row = (chatLog: ChatLog) => {
     return (
         <div className='row'>
-            <TimeStamp {...chatLog}></TimeStamp>
-            <Information {...chatLog}></Information>
+            <div>{timestamp}</div>
+            <div>{informations}</div>
         </div>
     );
 }
