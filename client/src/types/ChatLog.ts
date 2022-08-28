@@ -1,8 +1,10 @@
+import EventType from "./EventType";
+
 type ChatLog = {
-    UserName: string;
-    EventType: string;
-    Timestamp: Date;
-    Data?: string;
+    userName: string;
+    eventType: EventType;
+    timestamp: Date;
+    data?: string;
 }
 
 export default ChatLog;

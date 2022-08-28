@@ -7,10 +7,13 @@ class ChatLogStore {
 
     constructor() {
         makeAutoObservable(this);
-        this.loadChatLogStore();
+        this.loadData();
     }
 
-    loadChatLogStore() {
+    /**
+     * Loads the chat log data by making an API request and storing it in the state.
+     */
+    loadData() {
         APIAgent.GetChatLogs()
             .then(async (value: Response) => {
                 if (value.ok)
@@ -20,7 +23,18 @@ class ChatLogStore {
             })
             .then((chatLogList: ChatLog[]) => {
                 this.chatLogList = chatLogList;
+                this.handleDateString();
             })
+    }
+
+    /**
+     * Due to Typescript limitations, the retrieved date is in fact a string.
+     * This function parses each string that represents a Date object into a real Date object.
+     */
+    private handleDateString() {
+        this.chatLogList.forEach((chatLog: ChatLog) => {
+            chatLog.timestamp = new Date(chatLog.timestamp);
+        });
     }
 }
 

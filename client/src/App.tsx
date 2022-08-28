@@ -1,10 +1,11 @@
 import React from 'react';
 import ChatLogContext from './contexts/ChatLogContext';
-import { ChatLogList } from './components/chat-log-list/ChatLogList';
-import './App.css';
 import ChatLogStore from './stores/ChatLogStore';
+import { observer } from 'mobx-react-lite';
+import { ChatLogList } from './components/chat-log-list/ChatLogList';
+import './App.scss';
 
-const App = () => {
+const App = observer(() => {
   return (
     <div className="App">
       <ChatLogContext.Provider value={ChatLogStore.chatLogList}>
@@ -12,6 +13,6 @@ const App = () => {
       </ChatLogContext.Provider>
     </div>
   );
-};
+});
 
 export default App;
