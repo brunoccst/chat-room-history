@@ -7,7 +7,7 @@ Open the root folder on a terminal and install the packages via NPM with the fol
 
 This will install the Azure Static Web App CLI in the root folder, necessary for running both the API and the React client together, as well as all the necessary packages for the [_web client_](#client) project.
 
-To run the API and the client locally together, execute the SWA CLI `start` command in the root folder:
+To run the API and the client locally together, execute the SWA CLI command in the root folder to start it:
 `swa start`
 
 Wait for the terminal to notify that the Azure Static Web Apps emulator is started. You can then access the project at:
@@ -20,7 +20,7 @@ If you only want to access the API, you can do it by opening:
 > http://localhost:7071
 
 Note:
-It may be that your local machine throws an error when executing the _swa start_ command regarding a digital signature. You can solve this by running the following command first:
+It may be that your local machine throws an error when executing the `swa start` command regarding a digital signature. You can solve this by running the following command first:
 `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
 
 # Structure
