@@ -11,7 +11,7 @@ const Row = (chatEntry: ChatEntry) => {
     return (
         <div className='row'>
             <div>{timestamp}</div>
-            <div>{informations}</div>
+            <div className="informations">{informations}</div>
         </div>
     );
 }

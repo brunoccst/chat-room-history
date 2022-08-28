@@ -1,4 +1,10 @@
 .row {
     display: flex;
     gap: 20px;
+
+    .informations {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 }
