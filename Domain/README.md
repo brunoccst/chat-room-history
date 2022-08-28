@@ -1,6 +1,9 @@
 # Description
 The Domain is a basic .NET class library project responsible for executing logic in a given data source, returning it in the correct order, agreggation or any other processing required.
 
+# Technology
+This project uses .NET 6.0 and C# 10.0.
+
 # Types of messages
 There are four types of messages:
 
