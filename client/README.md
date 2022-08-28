@@ -1,9 +1,12 @@
 # Description
 A React app for displaying the chat log data. It makes HTTP requests to the API and displays it accordingly to the user.
 
-## Features
+# Technology
+This project uses React 18.
 
-### Granularity
+# Features
+
+## Granularity
 
 The user is able to switch the granularity of the data.
 For example, if the granularity "minute by minute" is selected, the data shown looks like this:
