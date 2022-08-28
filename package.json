@@ -1,0 +1,23 @@
+{
+  "name": "chat-room-history",
+  "version": "1.0.0",
+  "description": "A .NET Core + React app to display a chat room history.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brunoccst/chat-room-history.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brunoccst/chat-room-history/issues"
+  },
+  "homepage": "https://github.com/brunoccst/chat-room-history#readme",
+  "dependencies": {
+    "@azure/static-web-apps-cli": "^1.0.2"
+  }
+}
