@@ -18,7 +18,7 @@ export const ChatLogList = observer(() => {
 
         return (
             <div>
-                <label>Time interval:</label>
+                <label>Aggregation level:</label>
                 <select value={chatLogContext.timeInterval} onChange={onChange}>
                     {
                         Object.keys(TimeInterval)
