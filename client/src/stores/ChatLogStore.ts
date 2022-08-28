@@ -10,17 +10,15 @@ class ChatLogStore {
         this.loadChatLogStore();
     }
 
-    private loadChatLogStore() {
+    loadChatLogStore() {
         APIAgent.GetChatLogs()
             .then(async (value: Response) => {
-                console.log(await value.text());
                 if (value.ok)
                     return value.json();
                 else
                     throw Error(value.statusText);
             })
             .then((chatLogList: ChatLog[]) => {
-                console.log(chatLogList);
                 this.chatLogList = chatLogList;
             })
     }
