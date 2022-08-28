@@ -2,7 +2,7 @@
 A React app for displaying the chat log data. It makes HTTP requests to the API and displays it accordingly to the user.
 
 # Technology
-This project uses React 18.
+This project uses React 18.2.0 and Typescript 4.8.2.
 
 # Features
 
