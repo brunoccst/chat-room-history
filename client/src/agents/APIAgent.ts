@@ -2,7 +2,7 @@ import TimeInterval from "types/TimeInterval";
 
 class APIAgent {
     private path: string = "api";
-    GetChatEntrys = (timeInterval: TimeInterval) => fetch(`${this.path}/GetChatEntries?timeInterval=${timeInterval}`)
+    GetChatLogs = () => fetch(`${this.path}/GetChatEntries`)
 }
 
 const apiAgent = new APIAgent();
