@@ -1,25 +1,25 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
-import ChatLogContext from 'contexts/ChatEntryContext';
-import ChatEntry from 'types/ChatEntry';
-import Row from 'components/row/Row';
+import ChatEntryContext from 'contexts/ChatEntryContext';
 import TimeInterval, { toText } from 'types/TimeInterval';
+import TimestampChatEntryGroup from 'types/TimestampChatEntryGroup';
+import Row from 'components/row/Row';
 import './chat-entry-list.scss';
 
 export const ChatEntryList = observer(() => {
-    const chatLogContext = useContext(ChatLogContext);
+    const chatEntryContext = useContext(ChatEntryContext);
 
-    const AggregationLevel = () => {
+    const AggregationLevel = observer(() => {
         const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
             const numberValue = Number(event.target.value);
             const timeInterval = numberValue as TimeInterval;
-            chatLogContext.setTimeInterval(timeInterval);
+            chatEntryContext.setTimeInterval(timeInterval);
         }
 
         return (
             <div className="aggregation-level">
                 <label>Aggregation level:</label>
-                <select value={chatLogContext.timeInterval} onChange={onChange}>
+                <select value={chatEntryContext.timeInterval} onChange={onChange}>
                     {
                         Object.keys(TimeInterval)
                             .filter(key => !Number.isNaN(Number(key)))
@@ -34,18 +34,27 @@ export const ChatEntryList = observer(() => {
                 </select>
             </div>
         );
-    }
+    });
 
+    const TimestampChatEntryGroups = observer(() => {
+        return (
+            <>
+                {
+                    chatEntryContext.timestampChatEntryGroups
+                        .map((timestampGroup: TimestampChatEntryGroup) => {
+                            return (
+                                <Row {...timestampGroup}></Row>
+                            )
+                        })
+                }
+            </>
+        )
+    });
 
     return (
         <div className="chat-entry-list">
             <AggregationLevel></AggregationLevel>
-            {
-                chatLogContext.chatEntryList.map((chatEntry: ChatEntry) => {
-                    const key = `${chatEntry.timestamp.toISOString()}`;
-                    return <Row {...chatEntry} key={key}></Row>;
-                })
-            }
+            <TimestampChatEntryGroups></TimestampChatEntryGroups>
         </div>
     );
 });

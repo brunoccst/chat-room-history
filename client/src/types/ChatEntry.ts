@@ -1,6 +1,10 @@
+import EventType from "./EventType";
+
 type ChatEntry = {
-    timestamp: Date;
-    informations: string[]
+    userName: string;
+    eventType: EventType;
+    timestamp: string;
+    data?: string
 }
 
 export default ChatEntry;

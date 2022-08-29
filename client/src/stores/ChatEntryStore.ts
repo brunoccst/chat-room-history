@@ -1,11 +1,11 @@
 import { makeAutoObservable } from 'mobx';
 import TimeInterval from 'types/TimeInterval';
 import APIAgent from 'agents/APIAgent';
-import ChatEntry from 'types/ChatEntry';
+import TimestampChatEntryGroup from 'types/TimestampChatEntryGroup';
 
 class ChatEntryStore {
     timeInterval: TimeInterval = TimeInterval.MinuteByMinute;
-    chatEntryList: ChatEntry[] = [];
+    timestampChatEntryGroups: TimestampChatEntryGroup[] = [];
 
     constructor() {
         makeAutoObservable(this);
@@ -28,20 +28,9 @@ class ChatEntryStore {
                 else
                     throw Error(value.statusText);
             })
-            .then((chatEntryList: ChatEntry[]) => {
-                this.chatEntryList = chatEntryList;
-                this.handleDateString();
+            .then((timestampChatEntryGroups: TimestampChatEntryGroup[]) => {
+                this.timestampChatEntryGroups = timestampChatEntryGroups;
             })
-    }
-
-    /**
-     * Due to Typescript limitations, the retrieved date is in fact a string.
-     * This function parses each string that represents a Date object into a real Date object.
-     */
-    private handleDateString() {
-        this.chatEntryList.forEach((chatEntry: ChatEntry) => {
-            chatEntry.timestamp = new Date(chatEntry.timestamp);
-        });
     }
 }
 
