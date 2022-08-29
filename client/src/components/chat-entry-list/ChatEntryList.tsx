@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import ChatEntryContext from 'contexts/ChatEntryContext';
 import TimeInterval, { toText } from 'types/TimeInterval';
 import TimestampChatEntryGroup from 'types/TimestampChatEntryGroup';
-import Row from 'components/row/Row';
+import Row, { RowProps } from 'components/row/Row';
 import './chat-entry-list.scss';
 
 export const ChatEntryList = observer(() => {
@@ -42,8 +42,13 @@ export const ChatEntryList = observer(() => {
                 {
                     chatEntryContext.timestampChatEntryGroups
                         .map((timestampGroup: TimestampChatEntryGroup) => {
+                            const props: RowProps = {
+                                timeInterval: chatEntryContext.timeInterval,
+                                timestampGroup: timestampGroup
+                            }
+
                             return (
-                                <Row {...timestampGroup}></Row>
+                                <Row {...props}></Row>
                             )
                         })
                 }
