@@ -23,13 +23,17 @@ const MinuteByMinuteRow = (timestampGroup: TimestampChatEntryGroup) => {
     const timestamp = formatToTimeOnly(new Date(timestampGroup.timestamp));
 
     const eventTypeGroup = timestampGroup.eventTypeChatEntryGroups[0];
-    const information = InformationFormatters[eventTypeGroup.eventType](eventTypeGroup.events[0]);
+    const informations = eventTypeGroup.events.map((chatEntry: ChatEntry) => {
+        return InformationFormatters[eventTypeGroup.eventType](chatEntry);
+    })
 
     return (
         <div className='row'>
             <div>{timestamp}</div>
             <div className="informations">
-                <div>{information}</div>
+                {
+                    informations.map((information: string) => <div>{information}</div>)
+                }
             </div>
         </div>
     );
