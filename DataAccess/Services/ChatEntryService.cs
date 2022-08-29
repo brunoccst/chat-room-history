@@ -69,13 +69,14 @@ namespace DataAccess.Services
                         EventTypeChatEntryGroups = cetg
                             .GroupBy(ce => ce.EventType)
                             .Select(ceetg => new ChatEntryEventTypeGroup
-                            {
-                                EventType = ceetg.Key,
-                                Events = ceetg.Select(ce => ce)
-                                        .OrderBy(ce => ce.Timestamp)
-                                        .ToList()
-                            }
+                                {
+                                    EventType = ceetg.Key,
+                                    Events = ceetg.Select(ce => ce)
+                                            .OrderBy(ce => ce.Timestamp)
+                                            .ToList()
+                                }
                             )
+                            .OrderBy(ce => ce.EventType)
                             .ToList()
                     })
                     .OrderBy(cetg => cetg.Timestamp)
