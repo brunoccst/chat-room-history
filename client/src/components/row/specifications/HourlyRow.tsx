@@ -48,11 +48,17 @@ const getHighFiveInformations = (events: ChatEntry[]) => {
     highFiveGroups.forEach((value: number, key: number) => {
         const information = InformationFormatters[EventType.highFiveAnotherUser](value, key);
         result.push(information);
-    })
+    });
 
     return result;
 }
 
+
+/**
+ * A row element implementation for the "hourly" time interval
+ * @param timestampGroup Timestamp group
+ * @returns Element
+ */
 const HourlyRow = (timestampGroup: TimestampChatEntryGroup) => {
     const timestamp = formatToTimeOnly(new Date(timestampGroup.timestamp));
 

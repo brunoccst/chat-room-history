@@ -19,13 +19,18 @@ const InformationFormatters: InformationFormatterDict = {
     [EventType.leaveTheRoom]: LeaveTheRoom
 }
 
+/**
+ * A row element implementation for the "minute by minute" time interval
+ * @param timestampGroup Timestamp group
+ * @returns Element
+ */
 const MinuteByMinuteRow = (timestampGroup: TimestampChatEntryGroup) => {
     const timestamp = formatToTimeOnly(new Date(timestampGroup.timestamp));
 
     const eventTypeGroup = timestampGroup.eventTypeChatEntryGroups[0];
     const informations = eventTypeGroup.events.map((chatEntry: ChatEntry) => {
         return InformationFormatters[eventTypeGroup.eventType](chatEntry);
-    })
+    });
 
     return (
         <div className='row'>

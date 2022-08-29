@@ -64,7 +64,7 @@ export const ChatEntryList = observer(() => {
                             }
 
                             return (
-                                <Row {...props}></Row>
+                                <Row {...props} />
                             )
                         })
                 }
@@ -74,8 +74,8 @@ export const ChatEntryList = observer(() => {
 
     return (
         <div className="chat-entry-list">
-            <AggregationLevel></AggregationLevel>
-            <TimestampChatEntryGroups></TimestampChatEntryGroups>
+            <AggregationLevel />
+            <TimestampChatEntryGroups />
         </div>
     );
 });
