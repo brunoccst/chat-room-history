@@ -10,6 +10,10 @@ const App = () => {
       <ChatLogContext.Provider value={ChatLogStore}>
         <ChatEntryList></ChatEntryList>
       </ChatLogContext.Provider>
+      <a href="https://github.com/brunoccst/chat-room-history">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" className='github-icon' />
+        <div>chat-room-history</div>
+      </a>
     </div>
   );
 };
