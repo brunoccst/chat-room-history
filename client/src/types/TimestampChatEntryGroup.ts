@@ -1,4 +1,4 @@
-import EventTypeChatEntryGroup from "./EventTypeChatEntryGroup";
+import { EventTypeChatEntryGroup } from "types";
 
 type TimestampChatEntryGroup = {
     timestamp: string;

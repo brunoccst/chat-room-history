@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
-import ChatEntryContext from 'contexts/ChatEntryContext';
-import TimeInterval, { toText } from 'types/TimeInterval';
-import TimestampChatEntryGroup from 'types/TimestampChatEntryGroup';
-import Row, { RowProps } from 'components/row/Row';
+import ChatEntryContext from 'contexts';
+import { TimestampChatEntryGroup, TimeInterval } from 'types';
+import { toText } from 'utils';
+import Row, { RowProps } from 'components/row';
 import './chat-entry-list.scss';
 
 /**

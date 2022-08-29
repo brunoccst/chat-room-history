@@ -1,5 +1,4 @@
-import ChatEntry from "./ChatEntry";
-import EventType from "./EventType";
+import { ChatEntry, EventType } from "types";
 
 type EventTypeChatEntryGroup = {
     eventType: EventType;

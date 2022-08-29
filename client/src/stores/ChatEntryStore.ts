@@ -1,7 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import TimeInterval from 'types/TimeInterval';
-import APIAgent from 'agents/APIAgent';
-import TimestampChatEntryGroup from 'types/TimestampChatEntryGroup';
+import { TimestampChatEntryGroup, TimeInterval } from 'types';
+import APIAgent from 'agents';
 
 class ChatEntryStore {
     timeInterval: TimeInterval = TimeInterval.MinuteByMinute;

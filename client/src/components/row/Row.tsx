@@ -1,5 +1,4 @@
-import TimestampChatEntryGroup from 'types/TimestampChatEntryGroup';
-import TimeInterval from 'types/TimeInterval';
+import { TimestampChatEntryGroup, TimeInterval } from 'types';
 import RowRenderers from './specifications';
 import './row.scss';
 

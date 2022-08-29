@@ -1,4 +1,4 @@
-import EventType from "./EventType";
+import { EventType } from "types";
 
 type ChatEntry = {
     userName: string;

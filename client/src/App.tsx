@@ -1,7 +1,7 @@
 import React from 'react';
-import ChatLogContext from './contexts/ChatEntryContext';
-import ChatLogStore from './stores/ChatEntryStore';
-import { ChatEntryList } from './components/chat-entry-list/ChatEntryList';
+import ChatLogContext from 'contexts';
+import ChatLogStore from 'stores';
+import ChatEntryList from 'components/chat-entry-list';
 import './App.scss';
 
 const App = () => {

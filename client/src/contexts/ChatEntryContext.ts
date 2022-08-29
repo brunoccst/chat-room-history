@@ -1,5 +1,5 @@
 import { createContext } from "react"
-import { ChatEntryStore } from 'stores/ChatEntryStore';
+import { ChatEntryStore } from 'stores';
 
 const ChatLogContext = createContext<ChatEntryStore>({} as ChatEntryStore);
 
