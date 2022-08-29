@@ -4,18 +4,18 @@ using DataAccess.Interfaces;
 using DataAccess.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace UnitTests.ChatEntryServiceTests
+namespace UnitTests
 {
     [TestClass]
-    public class MinuteByMinuteTests
+    public class ChatEntryServiceTests
     {
-        private readonly TimeInterval timeInterval = TimeInterval.MinuteByMinute;
-
         #region Same event type
 
         [TestMethod]
         [TestCategory("NoUser")]
-        public void GivenNoUser_WhenNoEventCaused_ThenResultEmptyList()
+        [DataRow(TimeInterval.MinuteByMinute)]
+        [DataRow(TimeInterval.Hourly)]
+        public void GivenNoUser_WhenNoEventCaused_ThenResultEmptyList(TimeInterval timeInterval)
         {
             // Arrange
             var chatEntryService = new ChatEntryService(new List<ChatEvent>());
@@ -31,11 +31,15 @@ namespace UnitTests.ChatEntryServiceTests
 
         [TestMethod]
         [TestCategory("OneUser")]
-        [DataRow(EventType.EnterTheRoom)]
-        [DataRow(EventType.Comment)]
-        [DataRow(EventType.HighFiveAnotherUser)]
-        [DataRow(EventType.LeaveTheRoom)]
-        public void GivenOneUser_WhenCausedEvent_ThenResultIsOneChatEvent(EventType eventType)
+        [DataRow(TimeInterval.MinuteByMinute, EventType.EnterTheRoom)]
+        [DataRow(TimeInterval.MinuteByMinute, EventType.Comment)]
+        [DataRow(TimeInterval.MinuteByMinute, EventType.HighFiveAnotherUser)]
+        [DataRow(TimeInterval.MinuteByMinute, EventType.LeaveTheRoom)]
+        [DataRow(TimeInterval.Hourly, EventType.EnterTheRoom)]
+        [DataRow(TimeInterval.Hourly, EventType.Comment)]
+        [DataRow(TimeInterval.Hourly, EventType.HighFiveAnotherUser)]
+        [DataRow(TimeInterval.Hourly, EventType.LeaveTheRoom)]
+        public void GivenOneUser_WhenCausedEvent_ThenResultIsOneChatEvent(TimeInterval timeInterval, EventType eventType)
         {
             // Arrange
             var expectedChatEvent = new ChatEvent("Bob", eventType, new DateTime());
@@ -68,19 +72,24 @@ namespace UnitTests.ChatEntryServiceTests
 
         [TestMethod]
         [TestCategory("MultipleUsers")]
-        [DataRow(EventType.EnterTheRoom)]
-        [DataRow(EventType.Comment)]
-        [DataRow(EventType.HighFiveAnotherUser)]
-        [DataRow(EventType.LeaveTheRoom)]
-        public void GivenTwoUsers_WhenFiredEventsAtSameMinute_ThenResultIsOneTimestampGroupWithTwoChatEvents(EventType eventType)
+        [DataRow(TimeInterval.MinuteByMinute, "2022-01-01T00:00:00", "2022-01-01T00:00:59", EventType.EnterTheRoom)]
+        [DataRow(TimeInterval.MinuteByMinute, "2022-01-01T00:00:00", "2022-01-01T00:00:59", EventType.Comment)]
+        [DataRow(TimeInterval.MinuteByMinute, "2022-01-01T00:00:00", "2022-01-01T00:00:59", EventType.HighFiveAnotherUser)]
+        [DataRow(TimeInterval.MinuteByMinute, "2022-01-01T00:00:00", "2022-01-01T00:00:59", EventType.LeaveTheRoom)]
+        [DataRow(TimeInterval.Hourly, "2022-01-01T00:00:00", "2022-01-01T00:59:00", EventType.EnterTheRoom)]
+        [DataRow(TimeInterval.Hourly, "2022-01-01T00:00:00", "2022-01-01T00:59:00", EventType.Comment)]
+        [DataRow(TimeInterval.Hourly, "2022-01-01T00:00:00", "2022-01-01T00:59:00", EventType.HighFiveAnotherUser)]
+        [DataRow(TimeInterval.Hourly, "2022-01-01T00:00:00", "2022-01-01T00:59:00", EventType.LeaveTheRoom)]
+        public void GivenTwoUsers_WhenFiredEventsAtSameTimeInterval_ThenResultIsOneTimestampGroupWithTwoChatEvents(TimeInterval timeInterval, string firstTimestampString, string secondTimestampString, EventType eventType)
         {
             // Arrange
-            var expectedTimestamp = new DateTime(2022, 1, 1, 0, 0, 0);
+            var expectedTimestamp1 = DateTime.Parse(firstTimestampString);
+            var expectedTimestamp2 = DateTime.Parse(secondTimestampString);
 
             var expectedChatEventList = new List<ChatEvent>
             {
-                new ChatEvent("Bob", eventType, expectedTimestamp),
-                new ChatEvent("Kate", eventType, expectedTimestamp.AddSeconds(59))
+                new ChatEvent("Bob", eventType, expectedTimestamp1),
+                new ChatEvent("Kate", eventType, expectedTimestamp2)
             };
 
             var chatEntryService = new ChatEntryService(expectedChatEventList);
@@ -96,7 +105,7 @@ namespace UnitTests.ChatEntryServiceTests
             Assert.AreEqual(expectedTimestampGroupsCount, result.Count);
 
             var timestampGroup = result.First();
-            Assert.AreEqual(expectedTimestamp, timestampGroup.Timestamp);
+            Assert.AreEqual(expectedTimestamp1, timestampGroup.Timestamp);
             Assert.AreEqual(expectedEventTypeGroupsCount, timestampGroup.EventTypeChatEntryGroups.Count);
 
             var eventTypeGroup = timestampGroup.EventTypeChatEntryGroups.First();
@@ -108,15 +117,20 @@ namespace UnitTests.ChatEntryServiceTests
 
         [TestMethod]
         [TestCategory("MultipleUsers")]
-        [DataRow(EventType.EnterTheRoom)]
-        [DataRow(EventType.Comment)]
-        [DataRow(EventType.HighFiveAnotherUser)]
-        [DataRow(EventType.LeaveTheRoom)]
-        public void GivenTwoUsers_WhenFiredEventAtDifferentMinutes_ThenResultIsTwoTimestampGroupWithOneChatEventEach(EventType eventType)
+        [DataRow(TimeInterval.MinuteByMinute, "2022-01-01T00:00:00", "2022-01-01T00:01:00", EventType.EnterTheRoom)]
+        [DataRow(TimeInterval.MinuteByMinute, "2022-01-01T00:00:00", "2022-01-01T00:01:00", EventType.Comment)]
+        [DataRow(TimeInterval.MinuteByMinute, "2022-01-01T00:00:00", "2022-01-01T00:01:00", EventType.HighFiveAnotherUser)]
+        [DataRow(TimeInterval.MinuteByMinute, "2022-01-01T00:00:00", "2022-01-01T00:01:00", EventType.LeaveTheRoom)]
+        [DataRow(TimeInterval.Hourly, "2022-01-01T00:00:00", "2022-01-01T01:00:00", EventType.EnterTheRoom)]
+        [DataRow(TimeInterval.Hourly, "2022-01-01T00:00:00", "2022-01-01T01:00:00", EventType.Comment)]
+        [DataRow(TimeInterval.Hourly, "2022-01-01T00:00:00", "2022-01-01T01:00:00", EventType.HighFiveAnotherUser)]
+        [DataRow(TimeInterval.Hourly, "2022-01-01T00:00:00", "2022-01-01T01:00:00", EventType.LeaveTheRoom)]
+        public void GivenTwoUsers_WhenFiredEventAtDifferentTimeIntervals_ThenResultIsTwoTimestampGroupWithOneChatEventEach(TimeInterval timeInterval, string firstTimestampString, string secondTimestampString, EventType eventType)
         {
             // Arrange
-            var expectedTimestamp1 = new DateTime(2022, 1, 1, 0, 0, 0);
-            var expectedTimestamp2 = expectedTimestamp1.AddMinutes(1);
+            var expectedTimestamp1 = DateTime.Parse(firstTimestampString);
+            var expectedTimestamp2 = DateTime.Parse(secondTimestampString);
+
             var expectedChatEvent1 = new ChatEvent("Bob", eventType, expectedTimestamp1);
             var expectedChatEvent2 = new ChatEvent("Kate", eventType, expectedTimestamp2);
 
