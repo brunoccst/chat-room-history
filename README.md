@@ -24,7 +24,7 @@ It may be that your local machine throws an error when executing the `swa start`
 `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
 
 # Structure
-The solution has three projects and a _.github/workflows_ folder, which contains the pipeline for continous integration.
+The solution has three .NET projects, one React project and a _.github/workflows_ folder, which contains the pipeline for continous integration.
 
 ## API
 The API is an Azure Functions project. It has a [_data/chatEntry.json_](https://github.com/brunoccst/chat-room-history/tree/main/API/data) file, which is the file used as a data source for the whole application. This file is included in the project's assembly as an embedded resource and it's preloaded when the project starts (at [_Startup.cs_](https://github.com/brunoccst/chat-room-history/blob/main/API/Startup.cs)). The preloaded data is injected as a dependency to the solution so the [data access](#dataaccess) can access it without the need of explicitly receiving it from the API.
