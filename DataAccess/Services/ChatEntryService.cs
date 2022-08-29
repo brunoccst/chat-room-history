@@ -11,21 +11,17 @@ namespace DataAccess.Services
 {
     public class ChatEntryService : IChatEntryService
     {
-        /// <summary>
-        /// In memory chat events (data source).
-        /// </summary>
         private List<ChatEvent> chatEvents { get; set; }
 
         /// <summary>
-        /// A dictionary to store a method for each respective time interval type.
+        /// A dictionary to store a specific time span for each respective time interval type.
         /// </summary>
         private Dictionary<TimeInterval, TimeSpan> TimeIntervalLoadDict { get; set; }
 
         public ChatEntryService(List<ChatEvent> chatEvents)
         {
             this.chatEvents = chatEvents;
-
-            // Set each method to its respective time interval.
+            
             TimeIntervalLoadDict = new Dictionary<TimeInterval, TimeSpan>
             {
                 { TimeInterval.MinuteByMinute, new TimeSpan(0, 1, 0) },
@@ -35,18 +31,10 @@ namespace DataAccess.Services
 
         public List<ChatEntryTimestampGroup> GetChatEntries(TimeInterval timeInterval)
         {
-            return GetChatEntriesByInterval(TimeIntervalLoadDict[timeInterval]);
-        }
+            var interval = TimeIntervalLoadDict[timeInterval];
 
-        /// <summary>
-        /// Get the chat entries by an interval
-        /// </summary>
-        /// <param name="interval">Interval</param>
-        /// <returns>Chat entries within the interval</returns>
-        private List<ChatEntryTimestampGroup> GetChatEntriesByInterval(TimeSpan interval)
-        {
-            // If no interval was set, parse each ChatEvent into a ChatEntry,
-            // where the ChatEntry's informations list only contains one item - the ChatEvent itself.
+            // Select each ChatEvent, grouping them by EventType first, then by Timestamp.
+            // If no interval was set (Ticks = 0), simply map each ChatEvent into the group structure
             if (interval.Ticks == 0)
             {
                 return chatEvents
@@ -63,47 +51,36 @@ namespace DataAccess.Services
                     .OrderBy(ce => ce.Timestamp)
                     .ToList();
             }
-            // Else, return each ChatEntry with the respective ChatEvents
-            // where their timestamp is within the specified interval
+            // Else, group them as normally.
+            // The first group is the timestamp. To make it, it's necessary to divide the ChatEvent timestamp ticks by the requested interval ticks.
+            // E.g.: 17h00 in ticks = 612000000000 (some ChatEvent timestamp)
+            //       17h30 in ticks = 630000000000 (another ChatEvent timestamp)
+            //       18h00 in ticks = 648000000000 (another ChatEvent timestamp)
+            //       01h00 in ticks = 36000000000 (interval to group by - "Hourly")
+            //       Dividing the ticks of each ChatEvent timestamps by the interval ticks will result in 17 for the first two timestamps and 18 for the second - the 17h and 18h groups, respectively
+            // The second group is made by the event type. It's a simple "group by" that uses each distinc event type.
             else
             {
                 return chatEvents
-                    .GroupBy(ce => ce.Timestamp.Ticks / interval.Ticks)
+                    .GroupBy(ce => ce.Timestamp.Ticks / interval.Ticks) 
                     .Select(cetg => new ChatEntryTimestampGroup
                     {
                         Timestamp = new DateTime(cetg.Key * interval.Ticks),
                         EventTypeChatEntryGroups = cetg
                             .GroupBy(ce => ce.EventType)
                             .Select(ceetg => new ChatEntryEventTypeGroup
-                                {
-                                    EventType = ceetg.Key,
-                                    Events = ceetg.Select(ce => ce)
+                            {
+                                EventType = ceetg.Key,
+                                Events = ceetg.Select(ce => ce)
                                         .OrderBy(ce => ce.Timestamp)
                                         .ToList()
-                                }
+                            }
                             )
                             .ToList()
                     })
                     .OrderBy(cetg => cetg.Timestamp)
                     .ToList();
             }
-
-            //var grouped = from dt in chatEvents
-            //              group dt by (isZero) // If no interval was set...
-            //                ? dt.Timestamp.Ticks // ...then simply group by each own specific timestamp
-            //                : dt.Timestamp.Ticks / interval.Ticks // ...else, group all the events which their timestamp is within the defined interval
-            //              into g
-            //              select new ChatEntry
-            //              {
-            //                  Timestamp = (isZero) // If no interval was set...
-            //                      ? g.First().Timestamp // ...the group will only have one item, so use the first timestamp as value
-            //                      : new DateTime(g.Key * interval.Ticks), // ...else, use the group key timestamp (multiplying by the interval to return to the correct date time)
-            //                  Events = (isZero)
-            //                      ? g.Select(i => i.ToString()).ToList()
-            //                      : g.GroupBy(i => i.ToString()).ToList()
-            //              };
-
-            //return grouped.ToList();
         }
     }
 }

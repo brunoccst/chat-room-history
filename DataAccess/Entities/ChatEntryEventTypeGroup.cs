@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Entities
 {
+    /// <summary>
+    /// Represents a list of <see cref="ChatEvent"/> grouped by the <see cref="ChatEvent.EventType"/>
+    /// </summary>
     public class ChatEntryEventTypeGroup
     {
         public EventType EventType { get; set; }

@@ -5,6 +5,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
+    /// <summary>
+    /// Tests for the <see cref="ChatEntryService"/> service.
+    /// </summary>
+    /// Note: since there are two enumerators (<see cref="TimeInterval"/> and <see cref="EventType"/>)
+    /// and the service should be able to execute its main function with any arrangement of both,
+    /// this class has a test setup where it maps all values of each enumerator into a list,
+    /// which is then used in each method inside "foreach" loops to test all combinations possible of both lists.
     [TestClass]
     public class ChatEntryServiceTests
     {

@@ -6,10 +6,21 @@ import TimestampChatEntryGroup from 'types/TimestampChatEntryGroup';
 import Row, { RowProps } from 'components/row/Row';
 import './chat-entry-list.scss';
 
+/**
+ * An element which displays a header for switching the aggregation level
+ * and a list of chat entries below.
+ */
 export const ChatEntryList = observer(() => {
     const chatEntryContext = useContext(ChatEntryContext);
 
+    /**
+     * The aggregation header.
+     */
     const AggregationLevel = observer(() => {
+        /**
+         * Updates the time interval in the state with the selected value.
+         * @param event Event thrown when the HTMLSelectElement value has change
+         */
         const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
             const numberValue = Number(event.target.value);
             const timeInterval = numberValue as TimeInterval;
@@ -21,6 +32,7 @@ export const ChatEntryList = observer(() => {
                 <label>Aggregation level:</label>
                 <select value={chatEntryContext.timeInterval} onChange={onChange}>
                     {
+                        // Map all values of TimeInterval as an option
                         Object.keys(TimeInterval)
                             .filter(key => !Number.isNaN(Number(key)))
                             .map(key => {
@@ -36,10 +48,14 @@ export const ChatEntryList = observer(() => {
         );
     });
 
+    /**
+     * The list of chat entries, displayed differently according to the aggregation level
+     */
     const TimestampChatEntryGroups = observer(() => {
         return (
             <>
                 {
+                    // Map each timestamp group into a row
                     chatEntryContext.timestampChatEntryGroups
                         .map((timestampGroup: TimestampChatEntryGroup) => {
                             const props: RowProps = {

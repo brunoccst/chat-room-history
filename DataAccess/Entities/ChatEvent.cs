@@ -2,6 +2,9 @@
 
 namespace DataAccess.Entities
 {
+    /// <summary>
+    /// Represents each chat event from the data source
+    /// </summary>
     public class ChatEvent
     {
         public string UserName { get; set; }

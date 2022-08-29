@@ -52,6 +52,7 @@ const getHighFiveInformations = (events: ChatEntry[]) => {
 
     return result;
 }
+
 const HourlyRow = (timestampGroup: TimestampChatEntryGroup) => {
     const timestamp = formatToTimeOnly(new Date(timestampGroup.timestamp));
 

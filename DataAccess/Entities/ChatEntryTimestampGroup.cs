@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Entities
 {
+    /// <summary>
+    /// Represents a list of <see cref="ChatEntryEventTypeGroup"/> grouped by the <see cref="ChatEvent.Timestamp"/>
+    /// </summary>
     public class ChatEntryTimestampGroup
     {
         public DateTime Timestamp { get; set; }
