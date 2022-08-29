@@ -71,8 +71,6 @@ const HourlyRow = (timestampGroup: TimestampChatEntryGroup) => {
                             }
                             else {
                                 const formatterFunction = InformationFormatters[eventTypeGroup.eventType];
-                                if (eventTypeGroup.eventType === EventType.enterTheRoom)
-                                    console.log(eventTypeGroup.events);
                                 const information = formatterFunction(eventTypeGroup.events.length, 0);
                                 informations = [information];
                             }
