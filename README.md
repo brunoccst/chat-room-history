@@ -27,9 +27,9 @@ It may be that your local machine throws an error when executing the `swa start`
 The solution has three projects and a _.github/workflows_ folder, which contains the pipeline for continous integration.
 
 ## API
-The API is an Azure Functions project. It has a [_data/chatEntry.json_](https://github.com/brunoccst/chat-room-history/tree/main/API/data) file, which is the file used as a data source for the whole application. This file is included in the project's assembly as an embedded resource and it's preloaded when the project starts (at [_Startup.cs_](https://github.com/brunoccst/chat-room-history/blob/main/API/Startup.cs)). The preloaded data is injected as a dependency to the solution so the [data access](#data-access) can access it without the need of explicitly receiving it from the API.
+The API is an Azure Functions project. It has a [_data/chatEntry.json_](https://github.com/brunoccst/chat-room-history/tree/main/API/data) file, which is the file used as a data source for the whole application. This file is included in the project's assembly as an embedded resource and it's preloaded when the project starts (at [_Startup.cs_](https://github.com/brunoccst/chat-room-history/blob/main/API/Startup.cs)). The preloaded data is injected as a dependency to the solution so the [data access](#dataaccess) can access it without the need of explicitly receiving it from the API.
 
-This project exposes functions that can be called by HTTP requests (made by the [web client](#client)). These functions calls the [data access](#data-access) methods to process the preloaded data source and returns the processed data to the request caller.
+This project exposes functions that can be called by HTTP requests (made by the [web client](#client)). These functions calls the [data access](#dataaccess) methods to process the preloaded data source and returns the processed data to the request caller.
 
 ## Client
 A React app for displaying the chat events. It makes HTTP requests to the [API](#api) and displays it accordingly.
