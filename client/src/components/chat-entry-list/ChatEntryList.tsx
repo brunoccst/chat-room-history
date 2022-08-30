@@ -6,6 +6,7 @@ import { toText } from 'utils';
 import './chat-entry-list.scss';
 import Formatters from 'components/row/formatters';
 import Row, { RowInfo } from 'components/row';
+import LoadSpinner from 'components/load-spinner';
 
 /**
  * An element which displays a header for switching the aggregation level
@@ -65,7 +66,11 @@ export const ChatEntryList = observer(() => {
     return (
         <div className="chat-entry-list">
             <AggregationLevel />
-            <TimestampChatEntryGroups />
+            {
+                chatEntryContext.isLoading
+                    ? <LoadSpinner />
+                    : <TimestampChatEntryGroups />
+            }
         </div>
     );
 });
