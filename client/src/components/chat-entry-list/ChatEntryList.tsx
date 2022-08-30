@@ -3,8 +3,9 @@ import { observer } from 'mobx-react-lite';
 import ChatEntryContext from 'contexts';
 import { TimestampChatEntryGroup, TimeInterval } from 'types';
 import { toText } from 'utils';
-import ChatEntryGroup, { RowProps } from 'components/chat-entry';
 import './chat-entry-list.scss';
+import Formatters from 'components/row/formatters';
+import Row, { RowInfo } from 'components/row';
 
 /**
  * An element which displays a header for switching the aggregation level
@@ -47,14 +48,13 @@ export const ChatEntryList = observer(() => {
                 {
                     chatEntryContext.timestampChatEntryGroups
                         .map((timestampGroup: TimestampChatEntryGroup) => {
-                            const props: RowProps = {
-                                timeInterval: chatEntryContext.timeInterval,
-                                timestampGroup: timestampGroup
-                            }
+                            const entries = Formatters[chatEntryContext.timeInterval].GetEntries(timestampGroup);
+                            const rowInfo: RowInfo = {
+                                entries: entries,
+                                timestamp: timestampGroup.timestamp
+                            };
 
-                            return (
-                                <ChatEntryGroup {...props} />
-                            )
+                            return <Row {...rowInfo} />
                         })
                 }
             </>

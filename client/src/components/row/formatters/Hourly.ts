@@ -1,4 +1,4 @@
-import BaseFormatter from "components/chat-entry/formatters/BaseFormatter";
+import BaseFormatter from "components/row/formatters/BaseFormatter";
 import { ChatEntry, EventType, EventTypeChatEntryGroup, TimestampChatEntryGroup } from "types";
 
 class Hourly extends BaseFormatter {

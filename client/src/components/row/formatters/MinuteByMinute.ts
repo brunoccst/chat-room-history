@@ -1,4 +1,4 @@
-import BaseFormatter from "components/chat-entry/formatters/BaseFormatter";
+import BaseFormatter from "components/row/formatters/BaseFormatter";
 import { ChatEntry, EventTypeChatEntryGroup, TimestampChatEntryGroup } from "types";
 
 class MinuteByMinute extends BaseFormatter {
