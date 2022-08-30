@@ -51,7 +51,8 @@ export const ChatEntryList = observer(() => {
                             const entries = Formatters[chatEntryContext.timeInterval].GetEntries(timestampGroup);
                             const rowInfo: RowInfo = {
                                 entries: entries,
-                                timestamp: timestampGroup.timestamp
+                                timestamp: timestampGroup.timestamp,
+                                includeTimestampOnAll: chatEntryContext.timeInterval === TimeInterval.MinuteByMinute
                             };
 
                             return <Row {...rowInfo} />

@@ -3,10 +3,30 @@ import './row.scss';
 
 type RowInfo = {
     timestamp: string;
-    entries: string[]
+    entries: string[];
+    includeTimestampOnAll: boolean;
 }
 
-const Row = ({ timestamp, entries }: RowInfo) => {
+const Row = ({ timestamp, entries, includeTimestampOnAll }: RowInfo) => {
+    if (includeTimestampOnAll) {
+        return (
+            <>
+                {
+                    entries.map((entry: string) => {
+                        const rowInfo: RowInfo = {
+                            timestamp: timestamp,
+                            entries: [entry],
+                            includeTimestampOnAll: false
+                        }
+                        return (
+                            <Row {...rowInfo} />
+                        );
+                    })
+                }
+            </>
+        );
+    }
+    
     return (
         <div className='row'>
             <div>{formatToTimeOnly(new Date(timestamp))}</div>
