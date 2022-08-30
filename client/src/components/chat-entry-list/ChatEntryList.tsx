@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import ChatEntryContext from 'contexts';
 import { TimestampChatEntryGroup, TimeInterval } from 'types';
 import { toText } from 'utils';
-import Row, { RowProps } from 'components/row';
+import ChatEntryGroup, { RowProps } from 'components/chat-entry';
 import './chat-entry-list.scss';
 
 /**
@@ -13,14 +13,7 @@ import './chat-entry-list.scss';
 export const ChatEntryList = observer(() => {
     const chatEntryContext = useContext(ChatEntryContext);
 
-    /**
-     * The aggregation header.
-     */
     const AggregationLevel = observer(() => {
-        /**
-         * Updates the time interval in the state with the selected value.
-         * @param event Event thrown when the HTMLSelectElement value has change
-         */
         const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
             const numberValue = Number(event.target.value);
             const timeInterval = numberValue as TimeInterval;
@@ -48,14 +41,10 @@ export const ChatEntryList = observer(() => {
         );
     });
 
-    /**
-     * The list of chat entries, displayed differently according to the aggregation level
-     */
     const TimestampChatEntryGroups = observer(() => {
         return (
             <>
                 {
-                    // Map each timestamp group into a row
                     chatEntryContext.timestampChatEntryGroups
                         .map((timestampGroup: TimestampChatEntryGroup) => {
                             const props: RowProps = {
@@ -64,7 +53,7 @@ export const ChatEntryList = observer(() => {
                             }
 
                             return (
-                                <Row {...props} />
+                                <ChatEntryGroup {...props} />
                             )
                         })
                 }
