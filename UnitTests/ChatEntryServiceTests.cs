@@ -270,10 +270,17 @@ namespace UnitTests
         [TestCategory("OneUser")]
         public void GivenOneUser_WhenCausedDifferentEventsAtSameTimeInterval_ThenResultIsOneTimestampGroupWithTwoEventTypeGroups()
         {
+            var allEventTypesCount = AllEventTypes.Count();
             foreach (var timeInterval in AllTimeIntervals)
-                foreach (var eventType1 in AllEventTypes)
-                    foreach (var eventType2 in AllEventTypes.Except(new List<EventType>() { eventType1 }))
+                for (var i = 0; i < allEventTypesCount; i++)
+                {
+                    var eventType1 = AllEventTypes.ElementAt(i);
+                    for (var j = i+1; j < allEventTypesCount; j++)
+                    {
+                        var eventType2 = AllEventTypes.ElementAt(j);
                         givenOneUser_WhenCausedDifferentEventsAtSameTimeInterval_ThenResultIsOneTimestampGroupWithTwoEventTypeGroups(timeInterval, eventType1, eventType2);
+                    }
+                }
         }
 
         #endregion
