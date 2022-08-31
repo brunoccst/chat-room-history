@@ -5,285 +5,264 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
-    /// <summary>
-    /// Tests for the <see cref="ChatEntryService"/> service.
-    /// </summary>
-    /// Note: since there are two enumerators (<see cref="TimeInterval"/> and <see cref="EventType"/>)
-    /// and the service should be able to execute its main function with any arrangement of both,
-    /// this class has a test setup where it maps all values of each enumerator into a list,
-    /// which is then used in each method inside "foreach" loops to test all combinations possible of both lists.
     [TestClass]
     public class ChatEntryServiceTests
     {
-        /// <summary>
-        /// All time intervals enum values as an enumerable
-        /// </summary>
-        private static IEnumerable<TimeInterval> AllTimeIntervals
-        {
-            get
-            {
-                var values = Enum.GetValues(typeof(TimeInterval));
-                return values.Cast<TimeInterval>();
-            }
-        }
-
-        /// <summary>
-        /// All event type enum values as an enumerable
-        /// </summary>
-        private static IEnumerable<EventType> AllEventTypes
-        {
-            get
-            {
-                var values = Enum.GetValues(typeof(EventType));
-                return values.Cast<EventType>();
-            }
-        }
-
-        #region Same event type
-
-        private void givenNoUser_WhenNoEventCaused_ThenResultEmptyList(TimeInterval timeInterval)
+        [TestMethod]
+        [DataRow(TimeInterval.MinuteByMinute)]
+        [DataRow(TimeInterval.Hourly)]
+        public void GivenNoEvent_WhenEmptySource_ThenResultEmptyGroupList(TimeInterval timeInterval)
         {
             // Arrange
-            var expectedTimestampGroupsCount = 0;
-
-            var chatEntryService = new ChatEntryService(new List<ChatEvent>());
+            var expectedEventList = new List<ChatEvent>();
+            var chatEntryService = new ChatEntryService(expectedEventList);
 
             // Act
             var result = chatEntryService.GetChatEntries(timeInterval);
 
             // Assert
-            Assert.AreEqual(expectedTimestampGroupsCount, result.Count, timeInterval.ToString());
+            Assert.AreEqual(expectedEventList.Count, result.Count, timeInterval.ToString());
         }
 
         [TestMethod]
-        [TestCategory("NoUser")]
-        public void GivenNoUser_WhenNoEventCaused_ThenResultEmptyList()
-        {
-            foreach (var timeInterval in AllTimeIntervals)
-                givenNoUser_WhenNoEventCaused_ThenResultEmptyList(timeInterval);
-        }
-
-        private void givenOneUser_WhenCausedEvent_ThenResultIsOneChatEvent(TimeInterval timeInterval, EventType eventType)
+        [DataRow(TimeInterval.MinuteByMinute, EventType.Comment)]
+        [DataRow(TimeInterval.MinuteByMinute, EventType.EnterTheRoom)]
+        [DataRow(TimeInterval.Hourly, EventType.HighFiveAnotherUser)]
+        public void GivenOneEvent_WhenSourceHasOneEvent_ThenResultIsOneGroupWithOneEntry(TimeInterval timeInterval, EventType eventType)
         {
             // Arrange
-            var expectedChatEvent = new ChatEvent("Bob", eventType, new DateTime());
-            var chatEntryService = new ChatEntryService(new List<ChatEvent>
-            {
-                expectedChatEvent
-            });
-
-            var expectedTimestampGroupsCount = 1;
-            var expectedEventTypeGroupsCount = 1;
-            var expectedChatEventsCount = 1;
+            var expectedTimestamp = new DateTime();
+            var expectedEventType = EventType.EnterTheRoom;
+            var expectedChatEvent = new ChatEvent("Bob", expectedEventType, expectedTimestamp);
+            var expectedEventList = new List<ChatEvent> { expectedChatEvent };
+            var expectedGroupCount = 1;
+            var chatEntryService = new ChatEntryService(expectedEventList);
 
             // Act
             var result = chatEntryService.GetChatEntries(timeInterval);
 
             // Assert
-            Assert.AreEqual(expectedTimestampGroupsCount, result.Count);
+            Assert.AreEqual(expectedGroupCount, result.Count);
 
-            var timestampGroup = result.First();
-            Assert.AreEqual(expectedChatEvent.Timestamp, timestampGroup.Timestamp);
-            Assert.AreEqual(expectedEventTypeGroupsCount, timestampGroup.EventTypeChatEntryGroups.Count);
+            var group = result.First();
+            Assert.AreEqual(expectedTimestamp, group.Timestamp);
+            Assert.AreEqual(expectedEventType, group.EventType);
+            Assert.AreEqual(expectedEventList.Count, group.ChatEvents.Count);
 
-            var eventTypeGroup = timestampGroup.EventTypeChatEntryGroups.First();
-            Assert.AreEqual(expectedChatEvent.EventType, eventTypeGroup.EventType);
-            Assert.AreEqual(expectedChatEventsCount, eventTypeGroup.Events.Count);
-
-            var chatEvent = eventTypeGroup.Events.First();
+            var chatEvent = group.ChatEvents.First();
             Assert.AreEqual(expectedChatEvent, chatEvent);
         }
 
         [TestMethod]
-        [TestCategory("OneUser")]
-        public void GivenOneUser_WhenCausedEvent_ThenResultIsOneChatEvent()
-        {
-            foreach (var timeInterval in AllTimeIntervals)
-                foreach (var eventType in AllEventTypes)
-                    givenOneUser_WhenCausedEvent_ThenResultIsOneChatEvent(timeInterval, eventType);
-        }
-
-        private void givenTwoUsers_WhenFiredEventsAtSameTimeInterval_ThenResultIsOneTimestampGroupWithTwoChatEvents(TimeInterval timeInterval, EventType eventType, DateTime timestamp1, DateTime timestamp2)
+        [DataRow("2022-01-01T00:00:00", EventType.EnterTheRoom)]
+        [DataRow("2022-01-01T23:59:59", EventType.Comment)]
+        [DataRow("2022-12-31T00:00:00", EventType.HighFiveAnotherUser)]
+        [DataRow("2023-01-01T00:00:00", EventType.LeaveTheRoom)]
+        public void GivenTwoEvents_WhenAtSameTimestampAndSameEventType_ThenResultIsOneGroupOfSameTimestampAndSameEventTypeWithTwoEntries(string timestampString, EventType eventType)
         {
             // Arrange
+            var timestamp = DateTime.Parse(timestampString);
+            var expectedUserName = "Bob";
             var expectedChatEventList = new List<ChatEvent>
             {
-                new ChatEvent("Bob", eventType, timestamp1),
-                new ChatEvent("Kate", eventType, timestamp2)
+                new ChatEvent(expectedUserName, eventType, timestamp),
+                new ChatEvent(expectedUserName, eventType, timestamp)
             };
-
+            var expectedTimeInterval = TimeInterval.MinuteByMinute;
+            var expectedTimestampGivenTimeInterval = timestamp.AddSeconds(-timestamp.Second);
+            var expectedGroupCount = 1;
             var chatEntryService = new ChatEntryService(expectedChatEventList);
 
-            var expectedTimestampGroupsCount = 1;
-            var expectedEventTypeGroupsCount = 1;
-            var expectedChatEventsCount = 2;
-
             // Act
-            var result = chatEntryService.GetChatEntries(timeInterval);
+            var result = chatEntryService.GetChatEntries(expectedTimeInterval);
 
             // Assert
-            Assert.AreEqual(expectedTimestampGroupsCount, result.Count);
+            Assert.AreEqual(expectedGroupCount, result.Count);
 
-            var timestampGroup = result.First();
-            Assert.AreEqual(timestamp1, timestampGroup.Timestamp);
-            Assert.AreEqual(expectedEventTypeGroupsCount, timestampGroup.EventTypeChatEntryGroups.Count);
+            var group = result.First();
+            Assert.AreEqual(expectedTimestampGivenTimeInterval, group.Timestamp);
+            Assert.AreEqual(eventType, group.EventType);
+            Assert.AreEqual(expectedChatEventList.Count, group.ChatEvents.Count);
 
-            var eventTypeGroup = timestampGroup.EventTypeChatEntryGroups.First();
-            Assert.AreEqual(eventType, eventTypeGroup.EventType);
-            Assert.AreEqual(expectedChatEventsCount, eventTypeGroup.Events.Count);
-
-            CollectionAssert.AreEqual(expectedChatEventList, eventTypeGroup.Events);
+            Assert.AreEqual(expectedChatEventList.First(), group.ChatEvents.First());
+            Assert.AreEqual(expectedChatEventList.Last(), group.ChatEvents.Last());
         }
 
         [TestMethod]
-        [TestCategory("MultipleUsers")]
-        public void GivenTwoUsers_WhenFiredEventsAtSameTimeInterval_ThenResultIsOneTimestampGroupWithTwoChatEvents()
-        {
-            var timestamp1 = new DateTime(2022, 1, 1, 0, 0, 0);
-            foreach (var timeInterval in AllTimeIntervals)
-            {
-                var timestamp2 = (timeInterval == TimeInterval.MinuteByMinute)
-                    ? timestamp1.AddSeconds(59)
-                    : timestamp1.AddMinutes(59);
-
-                foreach (var eventType in AllEventTypes)
-                    givenTwoUsers_WhenFiredEventsAtSameTimeInterval_ThenResultIsOneTimestampGroupWithTwoChatEvents(timeInterval, eventType, timestamp1, timestamp2);
-            }
-        }
-
-        private void givenTwoUsers_WhenFiredEventAtDifferentTimeIntervals_ThenResultIsTwoTimestampGroupWithOneChatEventEach(TimeInterval timeInterval, EventType eventType, DateTime timestamp1, DateTime timestamp2)
+        [DataRow("2022-01-01T00:00:00", "2022-01-01T00:01:00", TimeInterval.MinuteByMinute)]
+        [DataRow("2022-01-01T00:01:00", "2022-01-01T00:00:00", TimeInterval.MinuteByMinute)]
+        [DataRow("2022-01-01T01:00:00", "2022-01-01T00:00:00", TimeInterval.Hourly)]
+        [DataRow("2022-01-01T00:00:00", "2022-01-01T01:00:00", TimeInterval.Hourly)]
+        public void GivenTwoEvents_WhenAtDifferentTimestamps_ThenResultIsTwoGroupsOfDifferentTimestampsWithOneEntryEach(string timestampString1, string timestampString2, TimeInterval timeInterval)
         {
             // Arrange
-            var expectedChatEvent1 = new ChatEvent("Bob", eventType, timestamp1);
-            var expectedChatEvent2 = new ChatEvent("Kate", eventType, timestamp2);
-
+            var timestamp1 = DateTime.Parse(timestampString1);
+            var timestamp2 = DateTime.Parse(timestampString2);
+            var expectedUserName = "Bob";
+            var expectedEventType = EventType.EnterTheRoom;
             var expectedChatEventList = new List<ChatEvent>
             {
-                expectedChatEvent1,
-                expectedChatEvent2
+                new ChatEvent(expectedUserName, expectedEventType, timestamp1),
+                new ChatEvent(expectedUserName, expectedEventType, timestamp2)
             };
-
-            var chatEntryService = new ChatEntryService(expectedChatEventList);
-
-            var expectedTimestampGroupsCount = 2;
-            var expectedEventTypeGroupsCount = 1;
-            var expectedChatEventsCount = 1;
-
-            // Act
-            var result = chatEntryService.GetChatEntries(timeInterval);
-
-            // Assert
-            Assert.AreEqual(expectedTimestampGroupsCount, result.Count);
-
-            var timestampGroup1 = result.First();
-            Assert.AreEqual(timestamp1, timestampGroup1.Timestamp);
-            Assert.AreEqual(expectedEventTypeGroupsCount, timestampGroup1.EventTypeChatEntryGroups.Count);
-
-            var eventTypeGroup1 = timestampGroup1.EventTypeChatEntryGroups.First();
-            Assert.AreEqual(eventType, eventTypeGroup1.EventType);
-            Assert.AreEqual(expectedChatEventsCount, eventTypeGroup1.Events.Count);
-
-            Assert.AreEqual(expectedChatEvent1, eventTypeGroup1.Events.First());
-
-            var timestampGroup2 = result.Last();
-            Assert.AreEqual(timestamp2, timestampGroup2.Timestamp);
-            Assert.AreEqual(expectedEventTypeGroupsCount, timestampGroup2.EventTypeChatEntryGroups.Count);
-
-            var eventTypeGroup2 = timestampGroup2.EventTypeChatEntryGroups.First();
-            Assert.AreEqual(eventType, eventTypeGroup2.EventType);
-            Assert.AreEqual(expectedChatEventsCount, eventTypeGroup2.Events.Count);
-
-            Assert.AreEqual(expectedChatEvent2, eventTypeGroup2.Events.First());
-
-            Assert.AreNotEqual(timestampGroup1.Timestamp, timestampGroup2.Timestamp);
-        }
-
-        [TestMethod]
-        [TestCategory("MultipleUsers")]
-        public void GivenTwoUsers_WhenFiredEventAtDifferentTimeIntervals_ThenResultIsTwoTimestampGroupWithOneChatEventEach()
-        {
-            var timestamp1 = new DateTime(2022, 1, 1, 0, 0, 0);
-            foreach (var timeInterval in AllTimeIntervals)
-            {
-                var timestamp2 = (timeInterval == TimeInterval.MinuteByMinute)
-                    ? timestamp1.AddMinutes(1)
-                    : timestamp1.AddHours(1);
-
-                foreach (var eventType in AllEventTypes)
-                    givenTwoUsers_WhenFiredEventAtDifferentTimeIntervals_ThenResultIsTwoTimestampGroupWithOneChatEventEach(timeInterval, eventType, timestamp1, timestamp2);
-            }
-        }
-
-        #endregion
-
-        #region Different event types
-
-        public void givenOneUser_WhenCausedDifferentEventsAtSameTimeInterval_ThenResultIsOneTimestampGroupWithTwoEventTypeGroups(TimeInterval timeInterval, EventType eventType1, EventType eventType2)
-        {
-            // Arrange
-            var timestamp = new DateTime();
-            var expectedChatEvent1 = new ChatEvent("Bob", eventType1, timestamp);
-            var expectedChatEvent2 = new ChatEvent("Bob", eventType2, timestamp);
-            var expectedChatEventList = new List<ChatEvent>
-            {
-                expectedChatEvent1,
-                expectedChatEvent2
-            };
-            var expectedTimestampGroupsCount = 1;
-            var expectedEventTypeGroupsCount = 2;
-            var expectedChatEventsCount = 1;
-
+            var orderedExpectedChatEventList = OrderList(expectedChatEventList);
+            var expectedChatEvent1 = orderedExpectedChatEventList.First();
+            var expectedChatEvent2 = orderedExpectedChatEventList.Last();
+            var expectedGroupCount = 2;
+            var expectedChatEntryCount = 1;
             var chatEntryService = new ChatEntryService(expectedChatEventList);
 
             // Act
             var result = chatEntryService.GetChatEntries(timeInterval);
 
             // Assert
-            Assert.AreEqual(expectedTimestampGroupsCount, result.Count);
+            Assert.AreEqual(expectedGroupCount, result.Count);
 
-            var timestampGroup = result.First();
-            Assert.AreEqual(expectedChatEvent1.Timestamp, timestampGroup.Timestamp);
-            Assert.AreEqual(expectedEventTypeGroupsCount, timestampGroup.EventTypeChatEntryGroups.Count);
+            var group1 = result.First();
+            Assert.AreEqual(expectedChatEvent1.Timestamp, group1.Timestamp);
+            Assert.AreEqual(expectedChatEvent1.EventType, group1.EventType);
+            Assert.AreEqual(expectedChatEntryCount, group1.ChatEvents.Count);
 
-            var eventTypeGroup1 = timestampGroup.EventTypeChatEntryGroups.First();
-            Assert.AreEqual(expectedChatEvent1.EventType, eventTypeGroup1.EventType);
-            Assert.AreEqual(expectedChatEventsCount, eventTypeGroup1.Events.Count);
-
-            var chatEvent1 = eventTypeGroup1.Events.First();
-            Assert.AreEqual(expectedChatEvent1, chatEvent1);
-
-            var eventTypeGroup2 = timestampGroup.EventTypeChatEntryGroups.Last();
-            Assert.AreEqual(expectedChatEvent2.EventType, eventTypeGroup2.EventType);
-            Assert.AreEqual(expectedChatEventsCount, eventTypeGroup2.Events.Count);
-            
-            Assert.AreNotEqual(eventTypeGroup1.EventType, eventTypeGroup2.EventType);
-
-            var chatEvent2 = eventTypeGroup2.Events.First();
-            Assert.AreEqual(expectedChatEvent2, chatEvent2);
-
-            Assert.AreNotEqual(chatEvent1.EventType, chatEvent2.EventType);
-            Assert.AreEqual(chatEvent1.UserName, chatEvent2.UserName);
-            Assert.AreEqual(chatEvent1.Timestamp, chatEvent2.Timestamp);
+            var group2 = result.Last();
+            Assert.AreEqual(expectedChatEvent2.Timestamp, group2.Timestamp);
+            Assert.AreEqual(expectedChatEvent2.EventType, group2.EventType);
+            Assert.AreEqual(expectedChatEntryCount, group2.ChatEvents.Count);
         }
 
         [TestMethod]
-        [TestCategory("OneUser")]
-        public void GivenOneUser_WhenCausedDifferentEventsAtSameTimeInterval_ThenResultIsOneTimestampGroupWithTwoEventTypeGroups()
+        [DataRow(EventType.EnterTheRoom, EventType.Comment, TimeInterval.MinuteByMinute)]
+        [DataRow(EventType.Comment, EventType.EnterTheRoom, TimeInterval.MinuteByMinute)]
+        [DataRow(EventType.HighFiveAnotherUser, EventType.LeaveTheRoom, TimeInterval.Hourly)]
+        public void GivenTwoEvents_WhenAtDifferentEventTypes_ThenResultIsTwoGroupsOfDifferentEventTypesWithOneEntryEach(EventType eventType1, EventType eventType2, TimeInterval timeInterval)
         {
-            var allEventTypesCount = AllEventTypes.Count();
-            foreach (var timeInterval in AllTimeIntervals)
-                for (var i = 0; i < allEventTypesCount; i++)
-                {
-                    var eventType1 = AllEventTypes.ElementAt(i);
-                    for (var j = i+1; j < allEventTypesCount; j++)
-                    {
-                        var eventType2 = AllEventTypes.ElementAt(j);
-                        givenOneUser_WhenCausedDifferentEventsAtSameTimeInterval_ThenResultIsOneTimestampGroupWithTwoEventTypeGroups(timeInterval, eventType1, eventType2);
-                    }
-                }
+            // Arrange
+            var expectedTimestamp = new DateTime();
+            var expectedUserName = "Bob";
+            var expectedChatEventList = new List<ChatEvent>
+            {
+                new ChatEvent(expectedUserName, eventType1, expectedTimestamp),
+                new ChatEvent(expectedUserName, eventType2, expectedTimestamp)
+            };
+            var orderedExpectedChatEventList = OrderList(expectedChatEventList);
+            var expectedChatEvent1 = orderedExpectedChatEventList.First();
+            var expectedChatEvent2 = orderedExpectedChatEventList.Last();
+            var expectedGroupCount = 2;
+            var expectedChatEntryCount = 1;
+            var chatEntryService = new ChatEntryService(expectedChatEventList);
+
+            // Act
+            var result = chatEntryService.GetChatEntries(timeInterval);
+
+            // Assert
+            Assert.AreEqual(expectedGroupCount, result.Count);
+
+            var group1 = result.First();
+            Assert.AreEqual(expectedChatEvent1.Timestamp, group1.Timestamp);
+            Assert.AreEqual(expectedChatEvent1.EventType, group1.EventType);
+            Assert.AreEqual(expectedChatEntryCount, group1.ChatEvents.Count);
+
+            var group2 = result.Last();
+            Assert.AreEqual(expectedChatEvent2.Timestamp, group2.Timestamp);
+            Assert.AreEqual(expectedChatEvent2.EventType, group2.EventType);
+            Assert.AreEqual(expectedChatEntryCount, group2.ChatEvents.Count);
         }
 
-        #endregion
+        [TestMethod]
+        [DataRow("2022-01-01T00:00:00", "2022-01-01T00:01:00", EventType.EnterTheRoom, EventType.Comment, TimeInterval.MinuteByMinute)]
+        [DataRow("2022-01-01T00:01:00", "2022-01-01T00:00:00", EventType.EnterTheRoom, EventType.Comment, TimeInterval.MinuteByMinute)]
+        [DataRow("2022-01-01T00:00:00", "2022-01-01T00:01:00", EventType.Comment, EventType.EnterTheRoom, TimeInterval.MinuteByMinute)]
+        [DataRow("2022-01-01T00:01:00", "2022-01-01T00:00:00", EventType.Comment, EventType.EnterTheRoom, TimeInterval.MinuteByMinute)]
+        [DataRow("2022-01-01T00:00:00", "2022-01-01T01:00:00", EventType.EnterTheRoom, EventType.Comment, TimeInterval.Hourly)]
+        public void GivenTwoEvents_WhenAtDifferentTimestampsAndDifferentEventTypes_ThenResultIsTwoGroupsOfDifferentTimestampsAndDifferentEventTypesWithOneEntryEach(string timestampString1, string timestampString2, EventType eventType1, EventType eventType2, TimeInterval timeInterval)
+        {
+            // Arrange
+            var timestamp1 = DateTime.Parse(timestampString1);
+            var timestamp2 = DateTime.Parse(timestampString2);
+            var expectedUserName = "Bob";
+            var expectedChatEventList = new List<ChatEvent>
+            {
+                new ChatEvent(expectedUserName, eventType1, timestamp1),
+                new ChatEvent(expectedUserName, eventType2, timestamp2)
+            };
+            var orderedExpectedChatEventList = OrderList(expectedChatEventList);
+            var expectedChatEvent1 = orderedExpectedChatEventList.First();
+            var expectedChatEvent2 = orderedExpectedChatEventList.Last();
+            var expectedGroupCount = 2;
+            var expectedChatEntryCount = 1;
+            var chatEntryService = new ChatEntryService(expectedChatEventList);
 
+            // Act
+            var result = chatEntryService.GetChatEntries(timeInterval);
+
+            // Assert
+            Assert.AreEqual(expectedGroupCount, result.Count);
+
+            var group1 = result.First();
+            Assert.AreEqual(expectedChatEvent1.Timestamp, group1.Timestamp);
+            Assert.AreEqual(expectedChatEvent1.EventType, group1.EventType);
+            Assert.AreEqual(expectedChatEntryCount, group1.ChatEvents.Count);
+
+            var group2 = result.Last();
+            Assert.AreEqual(expectedChatEvent2.Timestamp, group2.Timestamp);
+            Assert.AreEqual(expectedChatEvent2.EventType, group2.EventType);
+            Assert.AreEqual(expectedChatEntryCount, group2.ChatEvents.Count);
+        }
+
+        [TestMethod]
+        [DataRow("2022-01-01T00:00:00", "2022-01-01T00:01:00", "2022-01-01T00:02:00")] // 00 01 02
+        [DataRow("2022-01-01T00:01:00", "2022-01-01T00:02:00", "2022-01-01T00:00:00")] // 01 02 00
+        [DataRow("2022-01-01T00:02:00", "2022-01-01T00:00:00", "2022-01-01T00:01:00")] // 02 00 01
+        [DataRow("2022-01-01T00:00:00", "2022-01-01T00:02:00", "2022-01-01T00:01:00")] // 00 02 01
+        [DataRow("2022-01-01T00:01:00", "2022-01-01T00:00:00", "2022-01-01T00:02:00")] // 01 00 02
+        [DataRow("2022-01-01T00:02:00", "2022-01-01T00:01:00", "2022-01-01T00:00:00")] // 02 01 00
+        public void GivenThreeEvents_WhenAtDifferentTimestamps_ThenResultIsThreeGroupsOfDifferentTimestampsOrderedByTimestampWithOneEntryEach(string timestampString1, string timestampString2, string timestampString3)
+        {
+            // Arrange
+            var timestamp1 = DateTime.Parse(timestampString1);
+            var timestamp2 = DateTime.Parse(timestampString2);
+            var timestamp3 = DateTime.Parse(timestampString3);
+            var expectedUserName = "Bob";
+            var expectedEventType = EventType.EnterTheRoom;
+            var expectedChatEventList = new List<ChatEvent>
+            {
+                new ChatEvent(expectedUserName, expectedEventType, timestamp1),
+                new ChatEvent(expectedUserName, expectedEventType, timestamp2),
+                new ChatEvent(expectedUserName, expectedEventType, timestamp3),
+            };
+            var orderedExpectedChatEventList = OrderList(expectedChatEventList);
+            var expectedChatEvent1 = orderedExpectedChatEventList[0];
+            var expectedChatEvent2 = orderedExpectedChatEventList[1];
+            var expectedChatEvent3 = orderedExpectedChatEventList[2];
+            var expectedTimeInterval = TimeInterval.MinuteByMinute;
+            var expectedGroupCount = 3;
+            var expectedChatEntryCount = 1;
+            var chatEntryService = new ChatEntryService(expectedChatEventList);
+
+            // Act
+            var result = chatEntryService.GetChatEntries(expectedTimeInterval);
+
+            // Assert
+            Assert.AreEqual(expectedGroupCount, result.Count);
+
+            var group1 = result[0];
+            Assert.AreEqual(expectedChatEvent1.Timestamp, group1.Timestamp);
+            Assert.AreEqual(expectedChatEvent1.EventType, group1.EventType);
+            Assert.AreEqual(expectedChatEntryCount, group1.ChatEvents.Count);
+
+            var group2 = result[1];
+            Assert.AreEqual(expectedChatEvent2.Timestamp, group2.Timestamp);
+            Assert.AreEqual(expectedChatEvent2.EventType, group2.EventType);
+            Assert.AreEqual(expectedChatEntryCount, group2.ChatEvents.Count);
+
+            var group3 = result[2];
+            Assert.AreEqual(expectedChatEvent3.Timestamp, group3.Timestamp);
+            Assert.AreEqual(expectedChatEvent3.EventType, group3.EventType);
+            Assert.AreEqual(expectedChatEntryCount, group3.ChatEvents.Count);
+        }
+
+        private List<ChatEvent> OrderList(List<ChatEvent> list)
+        {
+            return list.OrderBy(c => c.Timestamp).ThenBy(c => c.EventType).ToList();
+        }
     }
 }

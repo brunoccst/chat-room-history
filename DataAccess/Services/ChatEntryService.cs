@@ -29,7 +29,7 @@ namespace DataAccess.Services
             };
         }
 
-        public List<ChatEntryTimestampGroup> GetChatEntries(TimeInterval timeInterval)
+        public List<ChatEntryGroup> GetChatEntries(TimeInterval timeInterval)
         {
             var interval = TimeIntervalLoadDict[timeInterval];
             var ticks = interval.Ticks == 0
@@ -37,27 +37,21 @@ namespace DataAccess.Services
                 : interval.Ticks;
 
             return chatEvents
-                .GroupBy(chatEvent => chatEvent.Timestamp.Ticks / ticks)
-                .Select(timestampGroup =>
-                    new ChatEntryTimestampGroup
+                .GroupBy(chatEvent => new
+                {
+                    timestamp = (chatEvent.Timestamp.Ticks / ticks),
+                    eventType = chatEvent.EventType
+                })
+                .Select(group =>
+                    new ChatEntryGroup
                     {
-                        Timestamp = new DateTime(timestampGroup.Key * ticks),
-                        EventTypeChatEntryGroups =
-                                timestampGroup
-                                .GroupBy(ce => ce.EventType)
-                                .Select(eventTypeGroup =>
-                                    new ChatEntryEventTypeGroup
-                                    {
-                                        EventType = eventTypeGroup.Key,
-                                        Events = eventTypeGroup.Select(ce => ce)
-                                                        .OrderBy(ce => ce.Timestamp)
-                                                        .ToList()
-                                    })
-                                .OrderBy(ce => ce.EventType)
-                                .ToList()
+                        Timestamp = new DateTime(group.Key.timestamp * ticks),
+                        EventType = group.Key.eventType,
+                        ChatEvents = group.ToList()
                     })
-                .OrderBy(cetg => cetg.Timestamp)
+                .OrderBy(group => group.Timestamp)
+                .ThenBy(group => group.EventType)
                 .ToList();
-        }
     }
+}
 }
