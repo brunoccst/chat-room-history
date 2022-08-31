@@ -1,9 +1,13 @@
-import { ChatEvent } from "components";
-import { ChatEventGroup as ChatEventGroupType, ChatEvent as ChatEventType } from "types";
+import { useContext } from "react";
+import ChatEventContext from 'contexts';
+import { Composed, Single } from "components";
+import { ChatEventGroup as ChatEventGroupType, ChatEvent as ChatEventType, TimeInterval } from "types";
 import { formatDate } from "utils";
 
-const ChatEventGroup = ({ timestamp, chatEvents }: ChatEventGroupType) => {
-    const formattedDate = formatDate(new Date(timestamp));
+const ChatEventGroup = (chatEventGroup: ChatEventGroupType) => {
+    const chatEventContext = useContext(ChatEventContext);
+
+    const formattedDate = formatDate(new Date(chatEventGroup.timestamp));
     const key = (chatEvent: ChatEventType) => `${chatEvent.timestamp.toString()}|${chatEvent.eventType}|${chatEvent.userName}}]`;
 
     return (
@@ -11,7 +15,10 @@ const ChatEventGroup = ({ timestamp, chatEvents }: ChatEventGroupType) => {
             <div>{formattedDate}</div>
             <div className="chat-events">
                 {
-                    chatEvents.map(chatEvent => <ChatEvent {...chatEvent} key={key(chatEvent)} />)
+                    (chatEventContext.timeInterval === TimeInterval.MinuteByMinute)
+                        ? chatEventGroup.chatEvents.map(chatEvent =>
+                            <Single {...chatEvent} key={key(chatEvent)} />)
+                        : <Composed {...chatEventGroup} />
                 }
             </div>
         </div>

@@ -1,3 +1,7 @@
-import ChatEvent from "./ChatEvent";
+import Composed from "./composed";
+import Single from "./single";
 
-export default ChatEvent;
+export {
+    Composed,
+    Single
+};
