@@ -7,7 +7,6 @@ import { ChatEventGroup as ChatEventGroupType } from 'types';
 
 export const ChatEventGroupList = observer(() => {
     const chatEventGroupContext = useContext(ChatEventGroupContext);
-
     const key = (chatEventGroup: ChatEventGroupType) => `${chatEventGroup.timestamp.toString()}|${chatEventGroup.eventType}`;
 
     return (
