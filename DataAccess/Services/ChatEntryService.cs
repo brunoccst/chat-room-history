@@ -52,6 +52,6 @@ namespace DataAccess.Services
                 .OrderBy(group => group.Timestamp)
                 .ThenBy(group => group.EventType)
                 .ToList();
+        }
     }
-}
 }
