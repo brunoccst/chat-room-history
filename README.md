@@ -1,22 +1,24 @@
 # Description
 The "chat-room-history" is a .NET Core + React solution for displaying the log history of a chat room. 
 
-# Installation & execution
+# Installation
 Open the root folder on a terminal and install the packages via NPM with the following command:
 `npm install`
 
 This will install the Azure Static Web App CLI in the root folder, necessary for running both the API and the React client together, as well as all the necessary packages for the [_web client_](#client) project.
 
-To run the API and the client locally together, execute the SWA CLI command in the root folder:
+# Execution
+To run the API and the client locally together, execute the following Azure Static Web App CLI command in the root folder:  
 `swa start`
 
-Wait for the terminal to notify that the Azure Static Web Apps emulator is started. You can then access the project at:
+Wait for the terminal to notify that the Azure Static Web Apps emulator is started.  
+You can then access the project at:
 > http://localhost:4280/
 
-If you only want to access the web client, you can do it by opening:
+If you **only** want to access the **web client**, you can do it by opening:
 > http://localhost:3000
 
-If you only want to access the API, you can do it by opening:
+If you **only** want to access the **API**, you can do it by opening:
 > http://localhost:7071
 
 Note:
