@@ -1,6 +1,7 @@
-import { formatDate, timeIntervalToText } from './utils';
+import { groupBy, formatDate, timeIntervalToText } from './utils';
 
 export {
+    groupBy,
     formatDate,
     timeIntervalToText
 }

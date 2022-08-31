@@ -17,7 +17,14 @@ export const ChatEventGroupList = observer(() => {
                     ? <LoadSpinner />
                     : chatEventGroupContext
                         .chatEventGroups
-                        .map(chatEventGroup => <ChatEventGroup {...chatEventGroup} key={key(chatEventGroup)} />)
+                        .map(chatEventGroup => {
+                            return (
+                                <ChatEventGroup
+                                    {...chatEventGroup}
+                                    key={key(chatEventGroup)}
+                                />
+                            );
+                        })
             }
         </div>
     );
