@@ -3,6 +3,7 @@ import ChatEventContext from 'contexts';
 import { Composed, Single } from "components";
 import { ChatEventGroup as ChatEventGroupType, ChatEvent as ChatEventType, TimeInterval } from "types";
 import { formatDate } from "utils";
+import './chat-event-group.scss';
 
 const ChatEventGroup = (chatEventGroup: ChatEventGroupType) => {
     const chatEventContext = useContext(ChatEventContext);
@@ -12,7 +13,7 @@ const ChatEventGroup = (chatEventGroup: ChatEventGroupType) => {
 
     return (
         <div className="chat-event-group">
-            <div>{formattedDate}</div>
+            <div className="timestamp">{formattedDate}</div>
             <div className="chat-events">
                 {
                     (chatEventContext.timeInterval === TimeInterval.MinuteByMinute)

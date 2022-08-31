@@ -1,0 +1,11 @@
+.chat-event-group {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+
+    .chat-events {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+}
