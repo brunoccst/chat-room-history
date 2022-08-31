@@ -21,14 +21,13 @@ namespace API
         }
 
         /// <summary>
-        /// Returns the chat entries grouped by the specified time interval and the respective event types.
-        /// Uses <see cref="TimeInterval.MinuteByMinute"/> if the time interval was not set in the request parameters.
+        /// Returns a list of chat events groups given the specified time interval, where <see cref="TimeInterval.MinuteByMinute"/> is the default
         /// </summary>
         /// <param name="req">Received HTTP request</param>
         /// <param name="log">Logger service</param>
-        /// <returns>Grouped chat entries</returns>
-        [FunctionName("GetChatEntries")]
-        public async Task<IActionResult> GetChatEntries(
+        /// <returns>List of chat event groups</returns>
+        [FunctionName("GetChatEventGroups")]
+        public async Task<IActionResult> GetChatEventGroups(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
@@ -39,7 +38,7 @@ namespace API
 
             log.LogInformation("Time interval: " + timeInterval);
 
-            var chatEntries = await Task.Run(() => this.chatEventService.GetChatEntries(timeInterval));
+            var chatEntries = await Task.Run(() => this.chatEventService.GetChatEventGroups(timeInterval));
 
             return new OkObjectResult(chatEntries);
         }

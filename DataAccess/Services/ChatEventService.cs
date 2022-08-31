@@ -29,7 +29,7 @@ namespace DataAccess.Services
             };
         }
 
-        public List<ChatEventGroup> GetChatEntries(TimeInterval timeInterval)
+        public List<ChatEventGroup> GetChatEventGroups(TimeInterval timeInterval)
         {
             var interval = TimeIntervalLoadDict[timeInterval];
             var ticks = interval.Ticks == 0
