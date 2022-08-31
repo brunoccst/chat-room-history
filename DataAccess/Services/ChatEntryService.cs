@@ -32,39 +32,30 @@ namespace DataAccess.Services
         public List<ChatEntryTimestampGroup> GetChatEntries(TimeInterval timeInterval)
         {
             var interval = TimeIntervalLoadDict[timeInterval];
+            var ticks = interval.Ticks == 0
+                ? 1
+                : interval.Ticks;
 
             return chatEvents
-                .GroupBy(chatEvent =>
-                {
-                    long ticks = interval.Ticks == 0
-                        ? 1
-                        : interval.Ticks;
-
-                    return chatEvent.Timestamp.Ticks / ticks;
-                })
-                .Select(cetg =>
-                {
-                    long ticks = interval.Ticks == 0
-                        ? 1
-                        : interval.Ticks;
-
-                    return new ChatEntryTimestampGroup
+                .GroupBy(chatEvent => chatEvent.Timestamp.Ticks / ticks)
+                .Select(timestampGroup =>
+                    new ChatEntryTimestampGroup
                     {
-                        Timestamp = new DateTime(cetg.Key * ticks),
-                        EventTypeChatEntryGroups = cetg
-                                            .GroupBy(ce => ce.EventType)
-                                            .Select(ceetg => new ChatEntryEventTypeGroup
-                                            {
-                                                EventType = ceetg.Key,
-                                                Events = ceetg.Select(ce => ce)
-                                                            .OrderBy(ce => ce.Timestamp)
-                                                            .ToList()
-                                            }
-                                            )
-                                            .OrderBy(ce => ce.EventType)
-                                            .ToList()
-                    };
-                })
+                        Timestamp = new DateTime(timestampGroup.Key * ticks),
+                        EventTypeChatEntryGroups =
+                                timestampGroup
+                                .GroupBy(ce => ce.EventType)
+                                .Select(eventTypeGroup =>
+                                    new ChatEntryEventTypeGroup
+                                    {
+                                        EventType = eventTypeGroup.Key,
+                                        Events = eventTypeGroup.Select(ce => ce)
+                                                        .OrderBy(ce => ce.Timestamp)
+                                                        .ToList()
+                                    })
+                                .OrderBy(ce => ce.EventType)
+                                .ToList()
+                    })
                 .OrderBy(cetg => cetg.Timestamp)
                 .ToList();
         }
