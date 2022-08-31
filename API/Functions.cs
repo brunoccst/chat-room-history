@@ -13,11 +13,11 @@ namespace API
 {
     public class Functions
     {
-        private IChatEntryService chatEntryService { get; set; }
+        private IChatEventService chatEventService { get; set; }
 
-        public Functions(IChatEntryService chatEntryService)
+        public Functions(IChatEventService chatEventService)
         {
-            this.chatEntryService = chatEntryService;
+            this.chatEventService = chatEventService;
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace API
 
             log.LogInformation("Time interval: " + timeInterval);
 
-            var chatEntries = await Task.Run(() => this.chatEntryService.GetChatEntries(timeInterval));
+            var chatEntries = await Task.Run(() => this.chatEventService.GetChatEntries(timeInterval));
 
             return new OkObjectResult(chatEntries);
         }

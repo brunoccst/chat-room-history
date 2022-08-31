@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Entities
 {
-    public class ChatEntryGroup
+    public class ChatEventGroup
     {
         public DateTime Timestamp { get; set; }
         public EventType EventType { get; set; }

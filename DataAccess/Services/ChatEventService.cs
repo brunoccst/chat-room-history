@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Services
 {
-    public class ChatEntryService : IChatEntryService
+    public class ChatEventService : IChatEventService
     {
         private List<ChatEvent> chatEvents { get; set; }
 
@@ -18,7 +18,7 @@ namespace DataAccess.Services
         /// </summary>
         private Dictionary<TimeInterval, TimeSpan> TimeIntervalLoadDict { get; set; }
 
-        public ChatEntryService(List<ChatEvent> chatEvents)
+        public ChatEventService(List<ChatEvent> chatEvents)
         {
             this.chatEvents = chatEvents;
 
@@ -29,7 +29,7 @@ namespace DataAccess.Services
             };
         }
 
-        public List<ChatEntryGroup> GetChatEntries(TimeInterval timeInterval)
+        public List<ChatEventGroup> GetChatEntries(TimeInterval timeInterval)
         {
             var interval = TimeIntervalLoadDict[timeInterval];
             var ticks = interval.Ticks == 0
@@ -43,7 +43,7 @@ namespace DataAccess.Services
                     eventType = chatEvent.EventType
                 })
                 .Select(group =>
-                    new ChatEntryGroup
+                    new ChatEventGroup
                     {
                         Timestamp = new DateTime(group.Key.timestamp * ticks),
                         EventType = group.Key.eventType,
