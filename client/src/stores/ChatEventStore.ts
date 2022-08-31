@@ -1,10 +1,10 @@
 import { makeAutoObservable } from 'mobx';
-import { TimestampChatEntryGroup, TimeInterval } from 'types';
+import { ChatEventGroup, TimeInterval } from 'types';
 import APIAgent from 'agents';
 
-class ChatEntryStore {
+class ChatEventStore {
     timeInterval: TimeInterval = TimeInterval.MinuteByMinute;
-    timestampChatEntryGroups: TimestampChatEntryGroup[] = [];
+    chatEventGroups: ChatEventGroup[] = [];
     isLoading: boolean = false;
 
     constructor() {
@@ -22,15 +22,15 @@ class ChatEntryStore {
      */
     private loadData() {
         this.isLoading = true;
-        APIAgent.GetChatEntries(this.timeInterval)
+        APIAgent.GetChatEventGroups(this.timeInterval)
             .then(async (value: Response) => {
                 if (value.ok)
                     return value.json();
                 else
                     throw Error(value.statusText);
             })
-            .then((timestampChatEntryGroups: TimestampChatEntryGroup[]) => {
-                this.timestampChatEntryGroups = timestampChatEntryGroups;
+            .then((chatEventGroups: ChatEventGroup[]) => {
+                this.chatEventGroups = chatEventGroups;
             })
             .finally(() => {
                 this.isLoading = false;
@@ -38,8 +38,8 @@ class ChatEntryStore {
     }
 }
 
-export { ChatEntryStore };
+export { ChatEventStore };
 
-const chatEntryStore = new ChatEntryStore();
+const chatEventStore = new ChatEventStore();
 
-export default chatEntryStore;
+export default chatEventStore;

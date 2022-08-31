@@ -1,10 +1,10 @@
 import { EventType } from "types";
 
-type ChatEntry = {
+type ChatEvent = {
     userName: string;
     eventType: EventType;
     timestamp: string;
     data?: string
 }
 
-export default ChatEntry;
+export default ChatEvent;

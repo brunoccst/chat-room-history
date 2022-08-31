@@ -1,6 +1,6 @@
-import { formatToTimeOnly, toText } from './utils';
+import { formatDate, timeIntervalToText } from './utils';
 
 export {
-    formatToTimeOnly,
-    toText
+    formatDate,
+    timeIntervalToText
 }

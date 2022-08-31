@@ -1,13 +1,11 @@
-import ChatEntry from "./ChatEntry";
+import ChatEvent from "./ChatEvent";
+import ChatEventGroup from "./ChatEventGroup";
 import EventType from "./EventType";
-import EventTypeChatEntryGroup from "./EventTypeChatEntryGroup";
 import TimeInterval from "./TimeInterval";
-import TimestampChatEntryGroup from "./TimestampChatEntryGroup";
-
-export { EventType, TimeInterval };
 
 export {
-    type ChatEntry,
-    type EventTypeChatEntryGroup,
-    type TimestampChatEntryGroup
+    type ChatEvent,
+    type ChatEventGroup,
+    EventType,
+    TimeInterval
 }

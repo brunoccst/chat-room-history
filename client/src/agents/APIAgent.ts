@@ -1,11 +1,11 @@
-import TimeInterval from "types/TimeInterval";
+import { TimeInterval } from "types";
 
 /**
- * Class responsible for only executing HTTP requests to the API, mirroring its functions.
+ * Class only responsible for executing HTTP requests to the API, mirroring its functions
  */
 class APIAgent {
     private path: string = "api";
-    GetChatEntries = (timeInterval: TimeInterval) => fetch(`${this.path}/GetChatEntries?timeInterval=${timeInterval}`)
+    GetChatEventGroups = (timeInterval: TimeInterval) => fetch(`${this.path}/GetChatEventGroups?timeInterval=${timeInterval}`)
 }
 
 const apiAgent = new APIAgent();

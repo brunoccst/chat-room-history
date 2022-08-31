@@ -18,7 +18,7 @@ namespace UnitTests
             var chatEventService = new ChatEventService(expectedEventList);
 
             // Act
-            var result = chatEventService.GetChatEntries(timeInterval);
+            var result = chatEventService.GetChatEventGroups(timeInterval);
 
             // Assert
             Assert.AreEqual(expectedEventList.Count, result.Count, timeInterval.ToString());
@@ -39,7 +39,7 @@ namespace UnitTests
             var chatEventService = new ChatEventService(expectedEventList);
 
             // Act
-            var result = chatEventService.GetChatEntries(timeInterval);
+            var result = chatEventService.GetChatEventGroups(timeInterval);
 
             // Assert
             Assert.AreEqual(expectedGroupCount, result.Count);
@@ -74,7 +74,7 @@ namespace UnitTests
             var chatEventService = new ChatEventService(expectedChatEventList);
 
             // Act
-            var result = chatEventService.GetChatEntries(expectedTimeInterval);
+            var result = chatEventService.GetChatEventGroups(expectedTimeInterval);
 
             // Assert
             Assert.AreEqual(expectedGroupCount, result.Count);
@@ -113,7 +113,7 @@ namespace UnitTests
             var chatEventService = new ChatEventService(expectedChatEventList);
 
             // Act
-            var result = chatEventService.GetChatEntries(timeInterval);
+            var result = chatEventService.GetChatEventGroups(timeInterval);
 
             // Assert
             Assert.AreEqual(expectedGroupCount, result.Count);
@@ -151,7 +151,7 @@ namespace UnitTests
             var chatEventService = new ChatEventService(expectedChatEventList);
 
             // Act
-            var result = chatEventService.GetChatEntries(timeInterval);
+            var result = chatEventService.GetChatEventGroups(timeInterval);
 
             // Assert
             Assert.AreEqual(expectedGroupCount, result.Count);
@@ -192,7 +192,7 @@ namespace UnitTests
             var chatEventService = new ChatEventService(expectedChatEventList);
 
             // Act
-            var result = chatEventService.GetChatEntries(timeInterval);
+            var result = chatEventService.GetChatEventGroups(timeInterval);
 
             // Assert
             Assert.AreEqual(expectedGroupCount, result.Count);
@@ -239,7 +239,7 @@ namespace UnitTests
             var chatEventService = new ChatEventService(expectedChatEventList);
 
             // Act
-            var result = chatEventService.GetChatEntries(expectedTimeInterval);
+            var result = chatEventService.GetChatEventGroups(expectedTimeInterval);
 
             // Assert
             Assert.AreEqual(expectedGroupCount, result.Count);
