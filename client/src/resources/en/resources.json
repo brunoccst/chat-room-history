@@ -1,0 +1,20 @@
+{
+    "aggregationLevel": "Aggregation level:",
+    "minuteByMinute": "Minute by minute",
+    "hourly": "Hourly",
+    "language": "Language:",
+    "userEnteredTheRoom": "{{userName}} entered the room",
+    "userCommented": "{{userName}} commented: \"{{comment}}\"",
+    "userHighFivedTargetUser": "{{userName}} high-fived {{targetUserName}}",
+    "userLeftTheRoom": "{{userName}} left the room",
+    "personCount": "{{count}} person",
+    "personCount_plural": "{{count}} people",
+    "personEnteredTheRoom": "$t(personCount, {\"count\": {{count}}}) entered the room",
+    "personEnteredTheRoom_plural": "$t(personCount, { \"count\": {{count}} }) entered the room",
+    "personCommented": "$t(personCount, { \"count\": {{count}} }) commented",
+    "personCommented_plural": "$t(personCount, { \"count\": {{count}} }) commented",
+    "personHighFivedTargetPerson": "$t(personCount, { \"count\": {{count}} }) high-fived $t(personCount, { \"count\": {{targetCount}} })",
+    "personHighFivedTargetPerson_plural": "$t(personCount, { \"count\": {{count}} }) high-fived $t(personCount, { \"count\": {{targetCount}} })",
+    "personLeftTheRoom": "$t(personCount, { \"count\": {{count}} }) left the room",
+    "personLeftTheRoom_plural": "$t(personCount, { \"count\": {{count}} }) left the room"
+}
