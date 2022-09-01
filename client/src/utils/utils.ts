@@ -1,24 +1,25 @@
 import { TimeInterval } from "types";
 
-export const formatToTimeOnly = (timestamp: Date) => {
+export const FormatDate = (timestamp: Date) => {
     return timestamp.toLocaleTimeString('en-US', {
         hour: 'numeric',
         minute: 'numeric'
     })
 }
 
-/**
-* Parses the enumerator into readable text
-* @param timeInterval Time interval enum value
-* @returns Readable text for the given time interval. Empty string if no definition set.
-*/
-export const toText = (timeInterval: TimeInterval) => {
-   switch (timeInterval) {
-       case TimeInterval.MinuteByMinute:
-           return "Minute by minute";
-       case TimeInterval.Hourly:
-           return "Hourly";
-       default:
-           return "";
-   }
+export const TimeIntervalToText = (timeInterval: TimeInterval) => {
+    const textDict: { [timeInterval: number]: string } = {
+        [TimeInterval.MinuteByMinute]: "Minute by minute",
+        [TimeInterval.Hourly]: "Hourly"
+    }
+
+    return textDict[timeInterval];
 }
+
+export const GroupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => K) =>
+    list.reduce((previous, currentItem) => {
+        const group = getKey(currentItem);
+        if (!previous[group]) previous[group] = [];
+        previous[group].push(currentItem);
+        return previous;
+    }, {} as Record<K, T[]>);

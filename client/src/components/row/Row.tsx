@@ -1,44 +1,27 @@
-import { formatToTimeOnly } from "utils";
+import { FormatDate } from "utils";
 import './row.scss';
 
-type RowInfo = {
+type RowProps = {
     timestamp: string;
-    entries: string[];
-    includeTimestampOnAll: boolean;
+    descriptions: string[];
 }
 
-const Row = ({ timestamp, entries, includeTimestampOnAll }: RowInfo) => {
-    if (includeTimestampOnAll) {
-        return (
-            <>
-                {
-                    entries.map((entry: string) => {
-                        const rowInfo: RowInfo = {
-                            timestamp: timestamp,
-                            entries: [entry],
-                            includeTimestampOnAll: false
-                        }
-                        return (
-                            <Row {...rowInfo} />
-                        );
-                    })
-                }
-            </>
-        );
-    }
-    
+const Row = ({timestamp, descriptions}: RowProps) => {
+    const formattedTimestamp = FormatDate(new Date(timestamp));
+
     return (
-        <div className='row'>
-            <div>{formatToTimeOnly(new Date(timestamp))}</div>
-            <div className="entries">
+        <div className="row">
+            <div className="timestamp">{formattedTimestamp}</div>
+            <div className="description-list">
                 {
-                    entries.map((entry: string) => <div>{entry}</div>)
+                    descriptions.map(description => {
+                        return <div className="description">{description}</div>;
+                    })
                 }
             </div>
         </div>
     )
 }
 
-export type { RowInfo };
-
+export type { RowProps };
 export default Row;

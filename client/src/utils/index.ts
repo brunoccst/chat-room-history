@@ -1,6 +1,9 @@
-import { formatToTimeOnly, toText } from './utils';
+import { GroupBy, FormatDate, TimeIntervalToText } from './utils';
+import GetDescriptions from './DescriptionFactory';
 
 export {
-    formatToTimeOnly,
-    toText
+    GroupBy,
+    FormatDate,
+    TimeIntervalToText,
+    GetDescriptions
 }

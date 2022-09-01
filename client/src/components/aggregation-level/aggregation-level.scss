@@ -1,0 +1,16 @@
+.aggregation-level {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    background-color: #6b7a89;
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 20px;
+
+    select {
+        padding: 10px 8px;
+        border-radius: 6px;
+    }
+}

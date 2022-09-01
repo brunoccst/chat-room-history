@@ -1,3 +1,3 @@
-import ChatLogContext from "./ChatEntryContext";
+import ChatEventContext from "./ChatEventContext";
 
-export default ChatLogContext;
+export default ChatEventContext;

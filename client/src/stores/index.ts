@@ -1,4 +1,4 @@
-import chatEntryStore, { ChatEntryStore } from "./ChatEntryStore";
+import chatEventStore, { ChatEventStore } from "./ChatEventStore";
 
-export type { ChatEntryStore };
-export default chatEntryStore;
+export type { ChatEventStore };
+export default chatEventStore;
