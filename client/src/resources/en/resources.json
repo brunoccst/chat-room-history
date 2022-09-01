@@ -9,8 +9,8 @@
     "personEnteredTheRoom_plural": "$t(personCount, { \"count\": {{count}} }) entered the room",
     "personCommented": "$t(personCount, { \"count\": {{count}} }) commented",
     "personCommented_plural": "$t(personCount, { \"count\": {{count}} }) commented",
-    "personHighFivedTargetPerson": "$t(personCount, { \"count\": {{initiatorCount}} }) high-fived $t(personCount, { \"count\": {{targetCount}} })",
-    "personHighFivedTargetPerson_plural": "$t(personCount, { \"count\": {{initiatorCount}} }) high-fived $t(personCount, { \"count\": {{targetCount}} })",
+    "personHighFivedTargetPerson": "$t(personCount, { \"count\": {{count}} }) high-fived $t(personCount, { \"count\": {{targetCount}} })",
+    "personHighFivedTargetPerson_plural": "$t(personCount, { \"count\": {{count}} }) high-fived $t(personCount, { \"count\": {{targetCount}} })",
     "personLeftTheRoom": "$t(personCount, { \"count\": {{count}} }) left the room",
     "personLeftTheRoom_plural": "$t(personCount, { \"count\": {{count}} }) left the room"
 }
