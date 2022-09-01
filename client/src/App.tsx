@@ -1,7 +1,7 @@
 import React from 'react';
 import ChatEventContext from 'contexts';
 import ChatEventStore from 'stores';
-import { ChatEventGroupList, GithubLink, LanguageSelector } from 'components';
+import { ChatEventGroupList, Footer } from 'components';
 import './App.scss';
 
 const App = () => {
@@ -10,8 +10,7 @@ const App = () => {
       <ChatEventContext.Provider value={ChatEventStore}>
         <ChatEventGroupList />
       </ChatEventContext.Provider>
-      <LanguageSelector />
-      <GithubLink />
+      <Footer />
     </div>
   );
 };
