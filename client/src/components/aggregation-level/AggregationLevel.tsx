@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import ChatEventGroupContext from 'contexts';
 import { TimeInterval } from "types";
-import { timeIntervalToText } from "utils";
+import { TimeIntervalToText } from "utils";
 import './aggregation-level.scss';
 
 const AggregationLevel = observer(() => {
@@ -24,7 +24,7 @@ const AggregationLevel = observer(() => {
                         .filter(key => !Number.isNaN(Number(key)))
                         .map(key => {
                             const timeInterval = Number(key) as TimeInterval;
-                            const text = timeIntervalToText(timeInterval);
+                            const text = TimeIntervalToText(timeInterval);
                             return (
                                 <option key={key} value={key}>{text}</option>
                             )

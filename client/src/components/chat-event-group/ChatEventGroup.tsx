@@ -2,13 +2,13 @@ import { useContext } from "react";
 import ChatEventContext from 'contexts';
 import { Composed, Single } from "components";
 import { ChatEventGroup as ChatEventGroupType, ChatEvent as ChatEventType, TimeInterval } from "types";
-import { formatDate } from "utils";
+import { FormatDate } from "utils";
 import './chat-event-group.scss';
 
 const ChatEventGroup = (chatEventGroup: ChatEventGroupType) => {
     const chatEventContext = useContext(ChatEventContext);
 
-    const formattedDate = formatDate(new Date(chatEventGroup.timestamp));
+    const formattedDate = FormatDate(new Date(chatEventGroup.timestamp));
     const key = (chatEvent: ChatEventType) => `${chatEvent.timestamp.toString()}|${chatEvent.eventType}|${chatEvent.userName}}]`;
 
     return (
