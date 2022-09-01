@@ -4,10 +4,10 @@ import { GroupBy, i18next } from 'utils';
 type ChatEventDescriptionDict = { [eventType: string]: (...args: any[]) => string }
 
 const ChatEventDescription: ChatEventDescriptionDict = {
-    [EventType.enterTheRoom]: (count: number) => i18next.t(`{{count}} person entered the room`, { count }),
-    [EventType.comment]: (count: number) => i18next.t(`{{count}} person commented`, { count }),
-    [EventType.highFiveAnotherUser]: (count: number, targetCount: number) => i18next.t(`{{count}} person high-fived {{targetCount}} person`, { count: count, targetCount: targetCount }),
-    [EventType.leaveTheRoom]: (count: number) => i18next.t(`{{count}} person left the room`, { count })
+    [EventType.enterTheRoom]: (count: number) => i18next.t(`personEnteredTheRoom`, { count }),
+    [EventType.comment]: (count: number) => i18next.t(`personCommented`, { count }),
+    [EventType.highFiveAnotherUser]: (initiatorCount: number, targetCount: number) => i18next.t(`personHighFivedTargetPerson`, { initiatorCount: initiatorCount, targetCount: targetCount }),
+    [EventType.leaveTheRoom]: (count: number) => i18next.t(`personLeftTheRoom`, { count })
 }
 
 const EventCountDescription = (chatEventGroup: ChatEventGroup) => {

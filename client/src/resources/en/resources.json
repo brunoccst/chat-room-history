@@ -1,14 +1,16 @@
 {
-    "{{userName}} entered the room": "{{userName}} entered the room",
-    "{{userName}} commented: \"{{comment}}\"": "{{userName}} commented: \"{{comment}}\"",
-    "{{userName}} high-fived {{targetUserName}}": "{{userName}} high-fived {{targetUserName}}",
-    "{{userName}} left the room": "{{userName}} left the room",
-    "{{count}} person entered the room": "{{count}} person entered the room",
-    "{{count}} person entered the room_plural": "{{count}} people entered the room",
-    "{{count}} person commented": "{{count}} person commented",
-    "{{count}} person commented_plural": "{{count}} people commented",
-    "{{count}} person high-fived {{targetCount}} person": "{{count}} person high-fived {{targetCount}} person",
-    "{{count}} person high-fived {{targetCount}} person_plural": "{{count}} people high-fived {{targetCount}} person",
-    "{{count}} person left the room": "{{count}} person left the room",
-    "{{count}} person left the room_plural": "{{count}} people left the room"
+    "userEnteredTheRoom": "{{userName}} entered the room",
+    "userCommented": "{{userName}} commented: \"{{comment}}\"",
+    "userHighFivedTargetUser": "{{userName}} high-fived {{targetUserName}}",
+    "userLeftTheRoom": "{{userName}} left the room",
+    "personCount": "{{count}} person",
+    "personCount_plural": "{{count}} people",
+    "personEnteredTheRoom": "$t(personCount, {\"count\": {{count}}}) entered the room",
+    "personEnteredTheRoom_plural": "$t(personCount, { \"count\": {{count}} }) entered the room",
+    "personCommented": "$t(personCount, { \"count\": {{count}} }) commented",
+    "personCommented_plural": "$t(personCount, { \"count\": {{count}} }) commented",
+    "personHighFivedTargetPerson": "$t(personCount, { \"count\": {{initiatorCount}} }) high-fived $t(personCount, { \"count\": {{targetCount}} })",
+    "personHighFivedTargetPerson_plural": "$t(personCount, { \"count\": {{initiatorCount}} }) high-fived $t(personCount, { \"count\": {{targetCount}} })",
+    "personLeftTheRoom": "$t(personCount, { \"count\": {{count}} }) left the room",
+    "personLeftTheRoom_plural": "$t(personCount, { \"count\": {{count}} }) left the room"
 }
