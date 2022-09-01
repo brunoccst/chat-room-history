@@ -1,13 +1,14 @@
+import { count } from 'console';
 import { ChatEvent, ChatEventGroup, EventType } from 'types';
-import { GroupBy } from 'utils';
+import { GroupBy, i18next } from 'utils';
 
 type ChatEventDescriptionDict = { [eventType: string]: (...args: any[]) => string }
 
 const ChatEventDescription: ChatEventDescriptionDict = {
-    [EventType.enterTheRoom]: (count: number) => `${count} people enter the room`,
-    [EventType.comment]: (count: number) => `${count} people comment`,
-    [EventType.highFiveAnotherUser]: (count1: number, count2: number) => `${count1} people high-five ${count2} people`,
-    [EventType.leaveTheRoom]: (count: number) => `${count} people leave the room`
+    [EventType.enterTheRoom]: (count: number) => i18next.t(`{{count}} person entered the room`, { count }),
+    [EventType.comment]: (count: number) => i18next.t(`{{count}} person commented`, { count }),
+    [EventType.highFiveAnotherUser]: (count: number, targetCount: number) => i18next.t(`{{count}} person high-fived {{targetCount}} person`, { count: count, targetCount: targetCount }),
+    [EventType.leaveTheRoom]: (count: number) => i18next.t(`{{count}} person left the room`, { count })
 }
 
 const EventCountDescription = (chatEventGroup: ChatEventGroup) => {
@@ -20,9 +21,9 @@ const HighFiveDescription = (chatEventGroup: ChatEventGroup) => {
 
     let descriptions: string[] = [];
     Object.keys(highFivePerTarget).forEach((key) => {
-        const count1 = Number(key);
-        const count2 = highFivePerTarget[count1].length;
-        const description = ChatEventDescription[chatEventGroup.eventType](count1, count2);
+        const count = Number(key);
+        const targetCount = highFivePerTarget[count].length;
+        const description = ChatEventDescription[chatEventGroup.eventType](count, targetCount);
         descriptions.push(description);
     })
 
