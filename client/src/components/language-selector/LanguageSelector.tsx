@@ -3,11 +3,9 @@ import { i18next } from 'utils';
 import { useTranslation } from 'react-i18next';
 import './language-selector.scss';
 
-type LanguageNameDict = { [shortName: string]: string }
-
-const LanguageNames: LanguageNameDict = {
-    ["en"]: "English",
-    ["pt"]: "Português"
+const LanguageNames = {
+    "en": "English",
+    "pt": "Português"
 }
 
 const LanguageSelector = () => {
@@ -25,7 +23,17 @@ const LanguageSelector = () => {
                     Object
                         .keys(i18next.services.resourceStore.data)
                         .map(lng => {
-                            const languageName = LanguageNames[lng];
+                            let languageName: string = "";
+                            Object.entries(LanguageNames)
+                                .find(([key, value]) => {
+                                    if (key === lng) {
+                                        languageName = value;
+                                        return true;
+                                    }
+
+                                    return false;
+                                });
+
                             return <option value={lng}>{languageName}</option>;
                         })
                 }
