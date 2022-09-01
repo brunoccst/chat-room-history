@@ -1,4 +1,8 @@
 {
+    "aggregationLevel": "Nível de agregação:",
+    "minuteByMinute": "Por minuto",
+    "hourly": "Por hora",
+    "language": "Língua:",
     "userEnteredTheRoom": "{{userName}} entrou na sala",
     "userCommented": "{{userName}} comentou: \"{{comment}}\"",
     "userHighFivedTargetUser": "{{userName}} e {{targetUserName}} fizeram high-five",

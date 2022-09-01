@@ -1,8 +1,11 @@
 import { ChatEventGroup, TimeInterval } from "types";
 import ChatEventStore from 'stores';
 import { GetDescription, GetDescriptions as GetComposedDescription } from "./Specifications";
+import { useTranslation } from 'react-i18next';
 
 const GetDescriptions = (chatEventGroup: ChatEventGroup) => {
+    useTranslation();
+
     let result: string[];
 
     switch (ChatEventStore.timeInterval) {

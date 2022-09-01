@@ -7,10 +7,10 @@ export const FormatDate = (timestamp: Date) => {
     })
 }
 
-export const TimeIntervalToText = (timeInterval: TimeInterval) => {
+export const GetTimeIntervalResourceKey = (timeInterval: TimeInterval) => {
     const textDict: { [timeInterval: number]: string } = {
-        [TimeInterval.MinuteByMinute]: "Minute by minute",
-        [TimeInterval.Hourly]: "Hourly"
+        [TimeInterval.MinuteByMinute]: "minuteByMinute",
+        [TimeInterval.Hourly]: "hourly"
     }
 
     return textDict[timeInterval];
