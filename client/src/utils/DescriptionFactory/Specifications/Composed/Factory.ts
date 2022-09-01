@@ -1,4 +1,3 @@
-import { count } from 'console';
 import { ChatEvent, ChatEventGroup, EventType } from 'types';
 import { GroupBy, i18next } from 'utils';
 

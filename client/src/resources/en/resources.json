@@ -1,0 +1,14 @@
+{
+    "{{userName}} entered the room": "{{userName}} entered the room",
+    "{{userName}} commented: \"{{comment}}\"": "{{userName}} commented: \"{{comment}}\"",
+    "{{userName}} high-fived {{targetUserName}}": "{{userName}} high-fived {{targetUserName}}",
+    "{{userName}} left the room": "{{userName}} left the room",
+    "{{count}} person entered the room": "{{count}} person entered the room",
+    "{{count}} person entered the room_plural": "{{count}} people entered the room",
+    "{{count}} person commented": "{{count}} person commented",
+    "{{count}} person commented_plural": "{{count}} people commented",
+    "{{count}} person high-fived {{targetCount}} person": "{{count}} person high-fived {{targetCount}} person",
+    "{{count}} person high-fived {{targetCount}} person_plural": "{{count}} people high-fived {{targetCount}} person",
+    "{{count}} person left the room": "{{count}} person left the room",
+    "{{count}} person left the room_plural": "{{count}} people left the room"
+}
