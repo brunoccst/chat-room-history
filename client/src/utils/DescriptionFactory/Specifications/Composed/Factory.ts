@@ -4,10 +4,10 @@ import { GroupBy } from 'utils';
 type ChatEventDescriptionDict = { [eventType: string]: (...args: any[]) => string }
 
 const ChatEventDescription: ChatEventDescriptionDict = {
-    [EventType.enterTheRoom]: (count: number) => `${count} entered the room`,
-    [EventType.comment]: (count: number) => `${count} comments`,
-    [EventType.highFiveAnotherUser]: (count1: number, count2: number) => `${count1} people high-fived ${count2} people`,
-    [EventType.leaveTheRoom]: (count: number) => `${count} left the room`
+    [EventType.enterTheRoom]: (count: number) => `${count} people enter the room`,
+    [EventType.comment]: (count: number) => `${count} people comment`,
+    [EventType.highFiveAnotherUser]: (count1: number, count2: number) => `${count1} people high-five ${count2} people`,
+    [EventType.leaveTheRoom]: (count: number) => `${count} people leave the room`
 }
 
 const EventCountDescription = (chatEventGroup: ChatEventGroup) => {
