@@ -6,7 +6,7 @@ type ChatEventDescriptionDict = { [eventType: string]: (...args: any[]) => strin
 const ChatEventDescription: ChatEventDescriptionDict = {
     [EventType.enterTheRoom]: (count: number) => i18next.t(`personEnteredTheRoom`, { count }),
     [EventType.comment]: (count: number) => i18next.t(`personCommented`, { count }),
-    [EventType.highFiveAnotherUser]: (initiatorCount: number, targetCount: number) => i18next.t(`personHighFivedTargetPerson`, { initiatorCount: initiatorCount, targetCount: targetCount }),
+    [EventType.highFiveAnotherUser]: (count: number, targetCount: number) => i18next.t(`personHighFivedTargetPerson`, { count: count, targetCount: targetCount }),
     [EventType.leaveTheRoom]: (count: number) => i18next.t(`personLeftTheRoom`, { count })
 }
 
