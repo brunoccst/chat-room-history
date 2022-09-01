@@ -11,10 +11,6 @@ const ChatEventDescription: ChatEventDescriptionDict = {
 }
 
 const GetDescription = (chatEventGroup: ChatEventGroup) => {
-    console.log(i18next.getResourceBundle('enUS', 'translation'));
-    console.log(i18next.t("{{userName}} entered the room", { userName: "hey" }));
-    console.log(i18next.language);
-    console.log(i18next.options);
     return chatEventGroup.chatEvents.map(c => ChatEventDescription[chatEventGroup.eventType](c));
 }
 
