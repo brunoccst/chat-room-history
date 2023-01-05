@@ -1,5 +1,5 @@
 # Description
-The "chat-room-history" is a .NET Core + React solution for displaying the log history of a chat room. 
+The "chat-room-history" is a .NET Core + React solution for displaying the log history of a chat room.
 
 [![Azure Static Web Apps CI/CD](https://github.com/brunoccst/chat-room-history/actions/workflows/azure-static-web-apps-yellow-dune-064556403.yml/badge.svg)](https://github.com/brunoccst/chat-room-history/actions/workflows/azure-static-web-apps-yellow-dune-064556403.yml)
 
