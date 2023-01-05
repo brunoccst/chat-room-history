@@ -3,7 +3,7 @@ The "chat-room-history" is a .NET Core + React solution for displaying the log h
 
 [![Azure Static Web Apps CI/CD](https://github.com/brunoccst/chat-room-history/actions/workflows/azure-static-web-apps-nice-dune-0aebbed10.yml/badge.svg)](https://github.com/brunoccst/chat-room-history/actions/workflows/azure-static-web-apps-nice-dune-0aebbed10.yml)
 
-https://nice-dune-0aebbed10.2.azurestaticapps.net
+Published version: https://nice-dune-0aebbed10.2.azurestaticapps.net
 
 # Installation
 Open the root folder on a terminal and install the packages via NPM with the following command:
